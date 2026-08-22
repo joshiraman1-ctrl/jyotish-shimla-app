@@ -1,0 +1,6 @@
+{
+  "name": "Jyotish Shimla AI Engine",
+  "description": "Expert Vedic Astrology AI backend and conversational engine featuring Kundali analysis, gemstone and Vedic remedies, esoteric guidance, and planetary transit insights.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
