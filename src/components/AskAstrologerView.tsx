@@ -18,6 +18,15 @@ interface AskAstrologerViewProps {
 }
 
 export const AskAstrologerView: React.FC<AskAstrologerViewProps> = ({ kundali }) => {
+  if (!kundali || !kundali.birthDetails || !kundali.lagnaRashi) {
+    return (
+      <div className="bg-white rounded-3xl border-2 border-orange-200 p-8 text-center space-y-4">
+        <p className="text-orange-950 font-serif text-base font-bold">जन्म विवरण उपलब्ध नहीं है।</p>
+        <p className="text-xs text-stone-600">कृपया पहले अपनी जन्म कुंडली की गणना करें।</p>
+      </div>
+    );
+  }
+
   const { birthDetails, lagnaRashi, dasha, doshas, gemstones } = kundali;
 
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -135,11 +144,11 @@ export const AskAstrologerView: React.FC<AskAstrologerViewProps> = ({ kundali })
             const parts = trimmed.substring(1).split(/(\*\*.*?\*\*)/g);
             return (
               <div key={idx} className="flex items-start gap-2 pl-2">
-                <span className="text-amber-400 font-bold">•</span>
+                <span className="text-orange-600 font-bold">•</span>
                 <p className="flex-1">
                   {parts.map((p, pIdx) =>
                     p.startsWith('**') && p.endsWith('**') ? (
-                      <strong key={pIdx} className="text-amber-300 font-semibold">
+                      <strong key={pIdx} className="text-orange-950 font-bold">
                         {p.slice(2, -2)}
                       </strong>
                     ) : (
@@ -156,7 +165,7 @@ export const AskAstrologerView: React.FC<AskAstrologerViewProps> = ({ kundali })
             <p key={idx}>
               {parts.map((p, pIdx) =>
                 p.startsWith('**') && p.endsWith('**') ? (
-                  <strong key={pIdx} className="text-amber-300 font-semibold">
+                  <strong key={pIdx} className="text-orange-950 font-bold">
                     {p.slice(2, -2)}
                   </strong>
                 ) : (
@@ -173,17 +182,17 @@ export const AskAstrologerView: React.FC<AskAstrologerViewProps> = ({ kundali })
   return (
     <div className="max-w-5xl mx-auto space-y-4">
       {/* Top Chat Card */}
-      <div className="bg-stone-900/90 rounded-2xl border border-amber-800/40 p-4 sm:p-5 shadow-xl flex flex-wrap items-center justify-between gap-3">
+      <div className="bg-gradient-to-br from-orange-100 via-amber-50 to-white rounded-3xl border-2 border-orange-300 p-4 sm:p-5 shadow-lg shadow-orange-950/5 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-amber-950 font-serif font-bold text-lg shadow-md border border-amber-300">
+          <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-orange-600 to-amber-600 flex items-center justify-center text-white font-serif font-bold text-xl shadow-md border-2 border-orange-300">
             ॐ
           </div>
           <div>
-            <h3 className="text-base font-serif font-bold text-amber-100 flex items-center gap-2">
+            <h3 className="text-base font-serif font-extrabold text-orange-950 flex items-center gap-2">
               ज्योतिष शिमला AI संवाद (Ask Vedic Astrologer)
             </h3>
-            <p className="text-xs text-stone-300">
-              जातक: <strong className="text-amber-300">{birthDetails.name}</strong> ({lagnaRashi.lagnaHindi} लग्न • {lagnaRashi.moonSignHindi} राशि)
+            <p className="text-xs text-stone-700 font-medium">
+              जातक: <strong className="text-orange-950">{birthDetails.name}</strong> ({lagnaRashi.lagnaHindi} लग्न • {lagnaRashi.moonSignHindi} राशि)
             </p>
           </div>
         </div>
@@ -201,17 +210,17 @@ export const AskAstrologerView: React.FC<AskAstrologerViewProps> = ({ kundali })
                 },
               ])
             }
-            className="text-xs text-stone-400 hover:text-amber-300 px-3 py-1.5 rounded-lg bg-stone-800 border border-amber-900/40 flex items-center gap-1.5 transition-colors"
+            className="text-xs text-orange-800 hover:text-orange-950 px-3.5 py-2 rounded-xl bg-white border border-orange-300 shadow-sm flex items-center gap-1.5 transition-colors font-bold"
           >
-            <RotateCcw className="w-3 h-3" /> नया वार्तालाप
+            <RotateCcw className="w-3.5 h-3.5 text-orange-600" /> नया वार्तालाप
           </button>
         </div>
       </div>
 
       {/* Main Chat Box */}
-      <div className="bg-stone-950/90 rounded-2xl border border-amber-800/40 shadow-2xl flex flex-col h-[580px] overflow-hidden">
+      <div className="bg-white rounded-3xl border-2 border-orange-200 shadow-xl shadow-orange-950/5 flex flex-col h-[580px] overflow-hidden">
         {/* Messages Scroll Area */}
-        <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-amber-700">
+        <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-orange-300 bg-gradient-to-b from-orange-50/30 to-white">
           {messages.map((msg) => {
             const isUser = msg.sender === 'user';
             return (
@@ -221,10 +230,10 @@ export const AskAstrologerView: React.FC<AskAstrologerViewProps> = ({ kundali })
               >
                 {/* Avatar */}
                 <div
-                  className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold shadow ${
+                  className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-bold shadow ${
                     isUser
-                      ? 'bg-amber-600 text-white'
-                      : 'bg-gradient-to-br from-amber-700 to-orange-800 text-amber-200 border border-amber-400/40'
+                      ? 'bg-orange-600 text-white'
+                      : 'bg-gradient-to-br from-amber-500 to-orange-600 text-white border border-orange-300'
                   }`}
                 >
                   {isUser ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
@@ -234,24 +243,26 @@ export const AskAstrologerView: React.FC<AskAstrologerViewProps> = ({ kundali })
                 <div
                   className={`max-w-[85%] sm:max-w-[75%] rounded-2xl p-4 shadow-md ${
                     isUser
-                      ? 'bg-amber-700 text-amber-50 rounded-tr-none'
-                      : 'bg-stone-900/90 text-stone-200 border border-amber-800/40 rounded-tl-none'
+                      ? 'bg-gradient-to-r from-orange-600 to-amber-600 text-white rounded-tr-none shadow-orange-600/20'
+                      : 'bg-white text-stone-800 border-2 border-orange-200 rounded-tl-none shadow-sm'
                   }`}
                 >
-                  <div className="flex items-center justify-between gap-4 mb-1 text-[10px] text-amber-300/80">
-                    <span className="font-semibold">
+                  <div className={`flex items-center justify-between gap-4 mb-1.5 text-[10px] font-bold ${
+                    isUser ? 'text-amber-100' : 'text-orange-700'
+                  }`}>
+                    <span>
                       {isUser ? 'आप (जातक)' : 'ज्योतिष शिमला AI'}
                     </span>
                     <div className="flex items-center gap-2">
-                      <span>{msg.timestamp}</span>
+                      <span className="font-normal opacity-80">{msg.timestamp}</span>
                       {!isUser && (
                         <button
                           type="button"
                           onClick={() => handleCopyMessage(msg.id, msg.text)}
-                          className="hover:text-amber-200 transition-colors"
+                          className="hover:text-orange-950 transition-colors"
                         >
                           {copiedId === msg.id ? (
-                            <Check className="w-3 h-3 text-emerald-400" />
+                            <Check className="w-3 h-3 text-emerald-600" />
                           ) : (
                             <Copy className="w-3 h-3" />
                           )}
@@ -268,12 +279,12 @@ export const AskAstrologerView: React.FC<AskAstrologerViewProps> = ({ kundali })
 
           {isLoading && (
             <div className="flex gap-3 items-start">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-700 to-orange-800 text-amber-200 border border-amber-400/40 flex items-center justify-center text-xs font-bold shrink-0">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-white border border-orange-300 flex items-center justify-center text-xs font-bold shrink-0">
                 <Bot className="w-4 h-4 animate-pulse" />
               </div>
-              <div className="bg-stone-900/90 border border-amber-800/40 rounded-2xl rounded-tl-none p-4 shadow-md space-y-2">
-                <div className="flex items-center gap-2 text-xs text-amber-300">
-                  <Sparkles className="w-3.5 h-3.5 animate-spin text-amber-400" />
+              <div className="bg-white border-2 border-orange-200 rounded-2xl rounded-tl-none p-4 shadow-sm space-y-2">
+                <div className="flex items-center gap-2 text-xs text-orange-900 font-bold">
+                  <Sparkles className="w-3.5 h-3.5 animate-spin text-orange-600" />
                   <span>ज्योतिष शिमला AI कुंडली के ग्रहों एवं गोचर का आंकलन कर रहा है...</span>
                 </div>
               </div>
@@ -284,16 +295,16 @@ export const AskAstrologerView: React.FC<AskAstrologerViewProps> = ({ kundali })
         </div>
 
         {/* Suggested Prompts Pill Bar */}
-        <div className="p-2.5 bg-stone-900/90 border-t border-amber-900/40 overflow-x-auto flex items-center gap-2 scrollbar-thin scrollbar-thumb-amber-700">
-          <span className="text-[11px] text-amber-400 font-semibold whitespace-nowrap pl-1 flex items-center gap-1">
-            <HelpCircle className="w-3 h-3" /> शीघ्र प्रश्न:
+        <div className="p-2.5 bg-orange-50/70 border-t border-orange-200 overflow-x-auto flex items-center gap-2 scrollbar-thin scrollbar-thumb-orange-300">
+          <span className="text-[11px] text-orange-900 font-bold whitespace-nowrap pl-1 flex items-center gap-1">
+            <HelpCircle className="w-3 h-3 text-orange-600" /> शीघ्र प्रश्न:
           </span>
           {SUGGESTED_PROMPTS.map((prompt, idx) => (
             <button
               key={idx}
               type="button"
               onClick={() => handleSendMessage(prompt)}
-              className="text-[11px] bg-stone-950 hover:bg-amber-950/80 text-amber-200 px-3 py-1 rounded-full border border-amber-800/40 whitespace-nowrap transition-colors hover:border-amber-500"
+              className="text-[11px] bg-white hover:bg-orange-100 text-orange-950 font-semibold px-3 py-1 rounded-full border border-orange-200 whitespace-nowrap transition-colors hover:border-orange-400 shadow-sm"
             >
               {prompt}
             </button>
@@ -301,7 +312,7 @@ export const AskAstrologerView: React.FC<AskAstrologerViewProps> = ({ kundali })
         </div>
 
         {/* Input Form Row */}
-        <div className="p-3 sm:p-4 bg-stone-900 border-t border-amber-800/40">
+        <div className="p-3 sm:p-4 bg-white border-t border-orange-200">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -315,13 +326,13 @@ export const AskAstrologerView: React.FC<AskAstrologerViewProps> = ({ kundali })
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               placeholder="पंडित जी से अपना ज्योतिषीय प्रश्न पूछें (उदा. करियर, विवाह, रत्न, महादशा...)"
-              className="flex-1 bg-stone-950 border border-amber-700/50 rounded-xl px-4 py-3 text-sm text-amber-50 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500"
+              className="flex-1 bg-orange-50/40 border border-orange-300 rounded-2xl px-4 py-3 text-sm text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500 font-medium"
             />
             <button
               type="submit"
               id="btn-send-chat"
               disabled={isLoading || !inputMessage.trim()}
-              className="px-5 py-3 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-semibold shadow-lg border border-amber-400/40 flex items-center justify-center gap-2 transition-all disabled:opacity-40"
+              className="px-5 py-3 rounded-2xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold shadow-md shadow-orange-600/25 border border-orange-400 flex items-center justify-center gap-2 transition-all disabled:opacity-40"
             >
               <Send className="w-4 h-4" />
               <span className="hidden sm:inline text-xs">पूछें</span>

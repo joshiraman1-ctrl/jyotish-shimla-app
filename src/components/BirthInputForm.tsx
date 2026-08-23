@@ -3,67 +3,26 @@ import { BirthDetails } from '../types';
 import { Sparkles, MapPin, Calendar, Clock, User, Compass, CheckCircle2, RotateCcw } from 'lucide-react';
 
 interface BirthInputFormProps {
-  onCalculate: (details: BirthDetails) => void;
+  onCalculate: (details: BirthDetails, viewMode: 'analysis' | 'calculations') => void;
   isLoading: boolean;
   initialDetails?: BirthDetails;
 }
 
-const CITY_PRESETS: { name: string; lat: number; lon: number; tz: number }[] = [
-  { name: 'Shimla, Himachal Pradesh (देवभूमि)', lat: 31.1048, lon: 77.1734, tz: 5.5 },
-  { name: 'Dharamshala, Himachal Pradesh', lat: 32.2190, lon: 76.3234, tz: 5.5 },
-  { name: 'Mandi, Himachal Pradesh (छोटी काशी)', lat: 31.7087, lon: 76.9320, tz: 5.5 },
-  { name: 'Kullu, Himachal Pradesh', lat: 31.9579, lon: 77.1095, tz: 5.5 },
-  { name: 'Solan, Himachal Pradesh', lat: 30.9084, lon: 77.0999, tz: 5.5 },
-  { name: 'New Delhi, India', lat: 28.6139, lon: 77.2090, tz: 5.5 },
-  { name: 'Varanasi, Uttar Pradesh (काशी)', lat: 25.3176, lon: 82.9739, tz: 5.5 },
-  { name: 'Haridwar, Uttarakhand', lat: 29.9457, lon: 78.1642, tz: 5.5 },
-  { name: 'Mumbai, Maharashtra', lat: 19.0760, lon: 72.8777, tz: 5.5 },
-  { name: 'Bengaluru, Karnataka', lat: 12.9716, lon: 77.5946, tz: 5.5 },
-  { name: 'Jaipur, Rajasthan', lat: 26.9124, lon: 75.7873, tz: 5.5 },
-  { name: 'London, United Kingdom', lat: 51.5074, lon: -0.1278, tz: 0.0 },
-  { name: 'New York, USA', lat: 40.7128, lon: -74.0060, tz: -5.0 },
-];
-
-const SAMPLE_PROFILES: { label: string; details: BirthDetails }[] = [
-  {
-    label: 'हिमाचल जातक (Shimla Birth)',
-    details: {
-      name: 'रोहित शर्मा',
-      gender: 'male',
-      dateOfBirth: '1995-10-18',
-      timeOfBirth: '07:45',
-      placeOfBirth: 'Shimla, Himachal Pradesh (देवभूमि)',
-      latitude: 31.1048,
-      longitude: 77.1734,
-      timezone: 5.5,
-    },
-  },
-  {
-    label: 'व्यापार एवं तकनीकी जातक (Delhi Birth)',
-    details: {
-      name: 'अदिति वर्मा',
-      gender: 'female',
-      dateOfBirth: '1998-04-22',
-      timeOfBirth: '14:20',
-      placeOfBirth: 'New Delhi, India',
-      latitude: 28.6139,
-      longitude: 77.2090,
-      timezone: 5.5,
-    },
-  },
-  {
-    label: 'आध्यात्मिक साधक (Kashi Birth)',
-    details: {
-      name: 'पंडित सूर्यांशु जोशी',
-      gender: 'male',
-      dateOfBirth: '1989-11-12',
-      timeOfBirth: '05:30',
-      placeOfBirth: 'Varanasi, Uttar Pradesh (काशी)',
-      latitude: 25.3176,
-      longitude: 82.9739,
-      timezone: 5.5,
-    },
-  },
+const CITY_PRESETS: { name: string; lat: number; lon: number; tz: number; keywords: string[] }[] = [
+  { name: 'शिमला, हिमाचल प्रदेश (Shimla)', lat: 31.1048, lon: 77.1734, tz: 5.5, keywords: ['shimla', 'शिमला', 'himachal'] },
+  { name: 'धर्मशाला, हिमाचल प्रदेश (Dharamshala)', lat: 32.2190, lon: 76.3234, tz: 5.5, keywords: ['dharamshala', 'धर्मशाला', 'dharamsala'] },
+  { name: 'मंडी, हिमाचल प्रदेश (Mandi)', lat: 31.7087, lon: 76.9320, tz: 5.5, keywords: ['mandi', 'मंडी'] },
+  { name: 'कुल्लू, हिमाचल प्रदेश (Kullu)', lat: 31.9579, lon: 77.1095, tz: 5.5, keywords: ['kullu', 'कुल्लू'] },
+  { name: 'सोलन, हिमाचल प्रदेश (Solan)', lat: 30.9084, lon: 77.0999, tz: 5.5, keywords: ['solan', 'सोलन'] },
+  { name: 'नई दिल्ली, भारत (New Delhi)', lat: 28.6139, lon: 77.2090, tz: 5.5, keywords: ['delhi', 'दिल्ली', 'new delhi', 'नई दिल्ली'] },
+  { name: 'वाराणसी, उत्तर प्रदेश (Varanasi/Kashi)', lat: 25.3176, lon: 82.9739, tz: 5.5, keywords: ['varanasi', 'वाराणसी', 'kashi', 'काशी', 'बनारस', 'banaras'] },
+  { name: 'हरिद्वार, उत्तराखंड (Haridwar)', lat: 29.9457, lon: 78.1642, tz: 5.5, keywords: ['haridwar', 'हरिद्वार'] },
+  { name: 'मुंबई, महाराष्ट्र (Mumbai)', lat: 19.0760, lon: 72.8777, tz: 5.5, keywords: ['mumbai', 'मुंबई', 'bombay', 'बंबई'] },
+  { name: 'बेंगलुरु, कर्नाटक (Bengaluru)', lat: 12.9716, lon: 77.5946, tz: 5.5, keywords: ['bengaluru', 'bangalore', 'बेंगलुरु', 'बैंगलोर'] },
+  { name: 'जयपुर, राजस्थान (Jaipur)', lat: 26.9124, lon: 75.7873, tz: 5.5, keywords: ['jaipur', 'जयपुर'] },
+  { name: 'चंडीगढ़ (Chandigarh)', lat: 30.7333, lon: 76.7794, tz: 5.5, keywords: ['chandigarh', 'चंडीगढ़'] },
+  { name: 'लंदन, यूनाइटेड किंगडम (London)', lat: 51.5074, lon: -0.1278, tz: 0.0, keywords: ['london', 'लंदन'] },
+  { name: 'न्यूयार्क, यूएसए (New York)', lat: 40.7128, lon: -74.0060, tz: -5.0, keywords: ['new york', 'न्यूयार्क', 'ny'] },
 ];
 
 export const BirthInputForm: React.FC<BirthInputFormProps> = ({
@@ -71,12 +30,12 @@ export const BirthInputForm: React.FC<BirthInputFormProps> = ({
   isLoading,
   initialDetails,
 }) => {
-  const [name, setName] = useState(initialDetails?.name || 'जातक');
+  const [name, setName] = useState(initialDetails?.name || '');
   const [gender, setGender] = useState<'male' | 'female' | 'other'>(initialDetails?.gender || 'male');
-  const [dateOfBirth, setDateOfBirth] = useState(initialDetails?.dateOfBirth || '1996-06-15');
-  const [timeOfBirth, setTimeOfBirth] = useState(initialDetails?.timeOfBirth || '10:30');
+  const [dateOfBirth, setDateOfBirth] = useState(initialDetails?.dateOfBirth || '');
+  const [timeOfBirth, setTimeOfBirth] = useState(initialDetails?.timeOfBirth || '12:00');
   const [placeOfBirth, setPlaceOfBirth] = useState(
-    initialDetails?.placeOfBirth || 'Shimla, Himachal Pradesh (देवभूमि)'
+    initialDetails?.placeOfBirth || 'शिमला, हिमाचल प्रदेश (Shimla)'
   );
   const [latitude, setLatitude] = useState(initialDetails?.latitude || 31.1048);
   const [longitude, setLongitude] = useState(initialDetails?.longitude || 77.1734);
@@ -91,69 +50,61 @@ export const BirthInputForm: React.FC<BirthInputFormProps> = ({
     setShowCityDropdown(false);
   };
 
-  const handleLoadSample = (sample: (typeof SAMPLE_PROFILES)[0]) => {
-    setName(sample.details.name);
-    setGender(sample.details.gender);
-    setDateOfBirth(sample.details.dateOfBirth);
-    setTimeOfBirth(sample.details.timeOfBirth);
-    setPlaceOfBirth(sample.details.placeOfBirth);
-    setLatitude(sample.details.latitude);
-    setLongitude(sample.details.longitude);
-    setTimezone(sample.details.timezone);
+  const handlePlaceInputChange = (val: string) => {
+    setPlaceOfBirth(val);
+    setShowCityDropdown(true);
+
+    const lower = val.toLowerCase().trim();
+    // Check if it matches any preset keywords
+    const matched = CITY_PRESETS.find((c) =>
+      c.keywords.some((kw) => lower.includes(kw)) || c.name.toLowerCase().includes(lower)
+    );
+    if (matched) {
+      setLatitude(matched.lat);
+      setLongitude(matched.lon);
+      setTimezone(matched.tz);
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleCalculateWithMode = (viewMode: 'analysis' | 'calculations') => {
     onCalculate({
       name: name.trim() || 'जातक',
       gender,
       dateOfBirth,
       timeOfBirth,
-      placeOfBirth,
+      placeOfBirth: placeOfBirth.trim() || 'शिमला, हिमाचल प्रदेश',
       latitude,
       longitude,
       timezone,
-    });
+    }, viewMode);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleCalculateWithMode('analysis');
   };
 
   return (
-    <div className="bg-stone-900/90 rounded-2xl border border-amber-800/40 p-5 sm:p-7 shadow-2xl backdrop-blur-sm">
+    <div className="bg-white rounded-2xl border-2 border-orange-200 p-5 sm:p-7 shadow-lg shadow-orange-950/5 backdrop-blur-sm">
       {/* Form Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-5 mb-6 border-b border-amber-800/30">
-        <div>
-          <div className="flex items-center gap-2">
-            <Compass className="w-5 h-5 text-amber-400" />
-            <h2 className="text-lg sm:text-xl font-serif font-bold text-amber-100">
-              प्राथमिक जन्म विवरण (Primary Birth Details)
-            </h2>
-          </div>
-          <p className="text-xs sm:text-sm text-stone-300 mt-1">
-            सटीक लग्न, राशि, नक्षत्र, ग्रह स्थिति एवं महादशा गणना हेतु अपना जन्म विवरण दर्ज करें।
-          </p>
+      <div className="pb-5 mb-6 border-b border-orange-100">
+        <div className="flex items-center gap-2">
+          <Compass className="w-5 h-5 text-orange-600" />
+          <h2 className="text-lg sm:text-xl font-serif font-bold text-orange-950">
+            प्राथमिक जन्म विवरण
+          </h2>
         </div>
-
-        {/* Quick Sample Profiles */}
-        <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="text-[11px] text-amber-400/90 font-medium">नमूना प्रोफाइल:</span>
-          {SAMPLE_PROFILES.map((sample, idx) => (
-            <button
-              key={idx}
-              type="button"
-              onClick={() => handleLoadSample(sample)}
-              className="text-[11px] bg-stone-800 hover:bg-amber-950/80 text-amber-200 px-2.5 py-1 rounded-md border border-amber-700/40 transition-colors"
-            >
-              {sample.label}
-            </button>
-          ))}
-        </div>
+        <p className="text-xs sm:text-sm text-stone-600 mt-1">
+          सटीक लग्न, राशि, नक्षत्र, ग्रह स्थिति एवं महादशा गणना हेतु अपना जन्म विवरण दर्ज करें।
+        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {/* Name */}
           <div>
-            <label className="block text-xs font-medium text-amber-200 mb-1.5 flex items-center gap-1.5">
-              <User className="w-3.5 h-3.5 text-amber-400" /> जातक का नाम (Full Name)
+            <label className="block text-xs font-semibold text-orange-950 mb-1.5 flex items-center gap-1.5">
+              <User className="w-3.5 h-3.5 text-orange-600" /> जातक का नाम
             </label>
             <input
               type="text"
@@ -162,29 +113,29 @@ export const BirthInputForm: React.FC<BirthInputFormProps> = ({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="उदा. राहुल शर्मा"
-              className="w-full bg-stone-800/90 border border-amber-700/40 rounded-lg px-3.5 py-2.5 text-sm text-amber-50 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500"
+              className="w-full bg-orange-50/40 border border-orange-200 rounded-lg px-3.5 py-2.5 text-sm text-stone-900 placeholder-stone-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-200 focus:border-orange-500 transition-colors"
             />
           </div>
 
           {/* Gender */}
           <div>
-            <label className="block text-xs font-medium text-amber-200 mb-1.5">
-              लिंग (Gender)
+            <label className="block text-xs font-semibold text-orange-950 mb-1.5">
+              लिंग
             </label>
             <div className="grid grid-cols-3 gap-2">
               {[
-                { id: 'male', label: 'पुरुष (Male)' },
-                { id: 'female', label: 'महिला (Female)' },
-                { id: 'other', label: 'अन्य (Other)' },
+                { id: 'male', label: 'पुरुष' },
+                { id: 'female', label: 'महिला' },
+                { id: 'other', label: 'अन्य' },
               ].map((item) => (
                 <button
                   key={item.id}
                   type="button"
                   onClick={() => setGender(item.id as any)}
-                  className={`py-2.5 px-2 rounded-lg text-xs font-medium border transition-all ${
+                  className={`py-2.5 px-2 rounded-lg text-xs font-semibold border transition-all ${
                     gender === item.id
-                      ? 'bg-amber-600/90 text-white border-amber-400'
-                      : 'bg-stone-800 text-stone-300 border-amber-900/40 hover:bg-stone-700'
+                      ? 'bg-gradient-to-r from-orange-600 to-amber-600 text-white border-orange-500 shadow'
+                      : 'bg-orange-50/40 text-stone-700 border-orange-200 hover:bg-orange-100'
                   }`}
                 >
                   {item.label}
@@ -195,8 +146,8 @@ export const BirthInputForm: React.FC<BirthInputFormProps> = ({
 
           {/* Date of Birth */}
           <div>
-            <label className="block text-xs font-medium text-amber-200 mb-1.5 flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5 text-amber-400" /> जन्म तिथि (Date of Birth)
+            <label className="block text-xs font-semibold text-orange-950 mb-1.5 flex items-center gap-1.5">
+              <Calendar className="w-3.5 h-3.5 text-orange-600" /> जन्म तिथि
             </label>
             <input
               type="date"
@@ -204,14 +155,14 @@ export const BirthInputForm: React.FC<BirthInputFormProps> = ({
               required
               value={dateOfBirth}
               onChange={(e) => setDateOfBirth(e.target.value)}
-              className="w-full bg-stone-800/90 border border-amber-700/40 rounded-lg px-3.5 py-2.5 text-sm text-amber-50 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500"
+              className="w-full bg-orange-50/40 border border-orange-200 rounded-lg px-3.5 py-2.5 text-sm text-stone-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-200 focus:border-orange-500 transition-colors"
             />
           </div>
 
           {/* Time of Birth */}
           <div>
-            <label className="block text-xs font-medium text-amber-200 mb-1.5 flex items-center gap-1.5">
-              <Clock className="w-3.5 h-3.5 text-amber-400" /> जन्म समय (Time of Birth - 24hr)
+            <label className="block text-xs font-semibold text-orange-950 mb-1.5 flex items-center gap-1.5">
+              <Clock className="w-3.5 h-3.5 text-orange-600" /> जन्म समय (24 घंटे)
             </label>
             <input
               type="time"
@@ -219,14 +170,14 @@ export const BirthInputForm: React.FC<BirthInputFormProps> = ({
               required
               value={timeOfBirth}
               onChange={(e) => setTimeOfBirth(e.target.value)}
-              className="w-full bg-stone-800/90 border border-amber-700/40 rounded-lg px-3.5 py-2.5 text-sm text-amber-50 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500"
+              className="w-full bg-orange-50/40 border border-orange-200 rounded-lg px-3.5 py-2.5 text-sm text-stone-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-200 focus:border-orange-500 transition-colors"
             />
           </div>
 
           {/* Place of Birth with Search & Suggestions */}
           <div className="md:col-span-2 relative">
-            <label className="block text-xs font-medium text-amber-200 mb-1.5 flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-amber-400" /> जन्म स्थान (Place of Birth)
+            <label className="block text-xs font-semibold text-orange-950 mb-1.5 flex items-center gap-1.5">
+              <MapPin className="w-3.5 h-3.5 text-orange-600" /> जन्म स्थान (शहर / गाँव)
             </label>
             <div className="relative">
               <input
@@ -235,39 +186,59 @@ export const BirthInputForm: React.FC<BirthInputFormProps> = ({
                 required
                 value={placeOfBirth}
                 onFocus={() => setShowCityDropdown(true)}
-                onChange={(e) => {
-                  setPlaceOfBirth(e.target.value);
-                  setShowCityDropdown(true);
-                }}
-                placeholder="स्थान खोजें (उदा. Shimla, New Delhi, Varanasi)"
-                className="w-full bg-stone-800/90 border border-amber-700/40 rounded-lg px-3.5 py-2.5 text-sm text-amber-50 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500"
+                onChange={(e) => handlePlaceInputChange(e.target.value)}
+                placeholder="स्थान खोजें (उदा. शिमला, दिल्ली, वाराणसी)"
+                className="w-full bg-orange-50/40 border border-orange-200 rounded-lg px-3.5 py-2.5 text-sm text-stone-900 placeholder-stone-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-200 focus:border-orange-500 transition-colors"
               />
               <button
                 type="button"
                 onClick={() => setShowCityDropdown(!showCityDropdown)}
-                className="absolute right-2.5 top-2.5 text-xs text-amber-400 hover:text-amber-300 font-medium"
+                className="absolute right-2.5 top-2.5 text-xs text-orange-600 hover:text-orange-800 font-semibold"
               >
-                चुनें ▼
+                शहर चुनें ▼
               </button>
+            </div>
+
+            {/* Quick Preset Pills */}
+            <div className="flex flex-wrap gap-1.5 mt-2">
+              <span className="text-[10px] text-stone-500 font-bold self-center">त्वरित चुनें:</span>
+              {CITY_PRESETS.slice(0, 6).map((cp, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => handleCitySelect(cp)}
+                  className="text-[10px] bg-orange-50 hover:bg-orange-100 text-orange-900 px-2 py-0.5 rounded border border-orange-200 font-medium transition-colors"
+                >
+                  {cp.name.split('(')[0].trim()}
+                </button>
+              ))}
             </div>
 
             {/* City Suggestions Dropdown */}
             {showCityDropdown && (
-              <div className="absolute z-30 left-0 right-0 mt-1 bg-stone-900 border border-amber-700/60 rounded-xl shadow-2xl max-h-56 overflow-y-auto p-1.5 scrollbar-thin scrollbar-thumb-amber-700">
-                <div className="text-[10px] uppercase font-bold text-amber-400/80 px-2.5 py-1">
-                  प्रमुख तीर्थ एवं शहर (Popular Locations)
+              <div className="absolute z-30 left-0 right-0 mt-1 bg-white border-2 border-orange-300 rounded-xl shadow-2xl max-h-56 overflow-y-auto p-1.5 scrollbar-thin scrollbar-thumb-orange-400">
+                <div className="text-[10px] uppercase font-bold text-orange-700 px-2.5 py-1 flex items-center justify-between">
+                  <span>प्रमुख शहर एवं तीर्थ</span>
+                  <button
+                    type="button"
+                    onClick={() => setShowCityDropdown(false)}
+                    className="text-stone-400 hover:text-stone-700 text-xs font-bold px-1"
+                  >
+                    ✕ बंद करें
+                  </button>
                 </div>
                 {CITY_PRESETS.filter((c) =>
-                  c.name.toLowerCase().includes(placeOfBirth.toLowerCase())
+                  c.name.toLowerCase().includes(placeOfBirth.toLowerCase()) ||
+                  c.keywords.some((kw) => kw.includes(placeOfBirth.toLowerCase()))
                 ).map((city, idx) => (
                   <button
                     key={idx}
                     type="button"
                     onClick={() => handleCitySelect(city)}
-                    className="w-full text-left px-3 py-2 rounded-lg text-xs text-stone-200 hover:bg-amber-950/80 hover:text-amber-200 flex items-center justify-between transition-colors"
+                    className="w-full text-left px-3 py-2 rounded-lg text-xs text-stone-800 hover:bg-orange-100 hover:text-orange-950 flex items-center justify-between transition-colors"
                   >
-                    <span>{city.name}</span>
-                    <span className="text-[10px] text-stone-400 font-mono">
+                    <span className="font-medium">{city.name}</span>
+                    <span className="text-[10px] text-stone-500 font-mono">
                       {city.lat.toFixed(2)}°N, {city.lon.toFixed(2)}°E
                     </span>
                   </button>
@@ -278,41 +249,60 @@ export const BirthInputForm: React.FC<BirthInputFormProps> = ({
         </div>
 
         {/* Coordinates Summary */}
-        <div className="bg-stone-950/60 rounded-xl p-3 border border-amber-900/30 flex flex-wrap items-center justify-between gap-3 text-xs text-stone-300">
+        <div className="bg-orange-50/70 rounded-xl p-3 border border-orange-200 flex flex-wrap items-center justify-between gap-3 text-xs text-stone-700">
           <div className="flex items-center gap-4">
             <span>
-              <strong className="text-amber-300">अक्षांश (Lat):</strong> {latitude.toFixed(4)}°
+              <strong className="text-orange-900">अक्षांश:</strong> {latitude.toFixed(4)}°
             </span>
             <span>
-              <strong className="text-amber-300">देशांतर (Lon):</strong> {longitude.toFixed(4)}°
+              <strong className="text-orange-900">देशांतर:</strong> {longitude.toFixed(4)}°
             </span>
             <span>
-              <strong className="text-amber-300">समय क्षेत्र (TZ):</strong> GMT{timezone >= 0 ? `+${timezone}` : timezone}
+              <strong className="text-orange-900">समय क्षेत्र:</strong> जीएमटी {timezone >= 0 ? `+${timezone}` : timezone}
             </span>
           </div>
 
-          <span className="text-[11px] text-amber-400 flex items-center gap-1">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> उच्च सटीकता लहिरी अयनांश गणना
+          <span className="text-[11px] text-orange-800 font-medium flex items-center gap-1">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> उच्च सटीकता लहिरी अयनांश गणना
           </span>
         </div>
 
-        {/* Submit Button */}
-        <div className="pt-2 flex justify-center">
+        {/* Two Division Calculation Buttons */}
+        <div className="pt-3 grid grid-cols-2 gap-3">
           <button
-            type="submit"
-            id="btn-compute-kundali"
+            type="button"
+            onClick={() => handleCalculateWithMode('analysis')}
             disabled={isLoading}
-            className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 hover:from-amber-500 hover:to-orange-500 text-white font-semibold shadow-xl border border-amber-300/40 flex items-center justify-center gap-2.5 transition-all transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50"
+            className="px-4 py-3.5 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold shadow-lg shadow-orange-600/20 border border-orange-400/40 flex items-center justify-center gap-2 transition-all transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 text-xs sm:text-sm font-serif"
           >
             {isLoading ? (
               <>
                 <RotateCcw className="w-4 h-4 animate-spin text-amber-200" />
-                <span>वैदिक गणना एवं AI विश्लेषण संकलित हो रहा है...</span>
+                <span>संकलन हो रहा है...</span>
               </>
             ) : (
               <>
                 <Sparkles className="w-4 h-4 text-amber-200" />
-                <span>कुंडली का पूर्ण विश्लेषण करें (Compute Kundali & Analysis)</span>
+                <span>1. विश्लेषण एवं फलादेश</span>
+              </>
+            )}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleCalculateWithMode('calculations')}
+            disabled={isLoading}
+            className="px-4 py-3.5 rounded-xl bg-gradient-to-r from-amber-600 to-orange-700 hover:from-amber-500 hover:to-orange-600 text-white font-bold shadow-lg shadow-orange-600/20 border border-orange-400/40 flex items-center justify-center gap-2 transition-all transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 text-xs sm:text-sm font-serif"
+          >
+            {isLoading ? (
+              <>
+                <RotateCcw className="w-4 h-4 animate-spin text-amber-200" />
+                <span>संकलन हो रहा है...</span>
+              </>
+            ) : (
+              <>
+                <Compass className="w-4 h-4 text-amber-200" />
+                <span>2. गणितीय गणना एवं चक्र</span>
               </>
             )}
           </button>

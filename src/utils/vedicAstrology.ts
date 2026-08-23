@@ -198,18 +198,19 @@ export function calculatePlanetaryPositions(details: BirthDetails): {
     ascTropical = normalizeDegree(ascTropical + 360);
   }
   const lagnaSidereal = normalizeDegree(ascTropical - ayanamsha);
-  const lagnaIndex = Math.floor(lagnaSidereal / 30);
+  const lagnaIndex = Math.min(11, Math.max(0, Math.floor(lagnaSidereal / 30)));
 
   const getPlanetDetails = (name: PlanetName, degree: number, isRetro: boolean = false, speed: number = 1): PlanetInfo => {
-    const rashiIndex = Math.floor(degree / 30);
-    const signDegree = degree % 30;
-    const rashi = RASHIS[rashiIndex];
+    const normDegree = normalizeDegree(degree);
+    const rashiIndex = Math.min(11, Math.max(0, Math.floor(normDegree / 30)));
+    const signDegree = normDegree % 30;
+    const rashi = RASHIS[rashiIndex] || RASHIS[0];
     
     // Nakshatra (360 / 27 = 13.3333 deg each)
-    const nakIndex = Math.floor(degree / (360 / 27));
-    const nak = NAKSHATRAS[nakIndex % 27];
-    const degInNak = degree % (360 / 27);
-    const pada = Math.floor(degInNak / (13.33333 / 4)) + 1;
+    const nakIndex = Math.min(26, Math.max(0, Math.floor(normDegree / (360 / 27))));
+    const nak = NAKSHATRAS[nakIndex] || NAKSHATRAS[0];
+    const degInNak = normDegree % (360 / 27);
+    const pada = Math.min(4, Math.max(1, Math.floor(degInNak / (13.33333 / 4)) + 1));
 
     // House calculation from Lagna
     let house = ((rashiIndex - lagnaIndex + 12) % 12) + 1;
