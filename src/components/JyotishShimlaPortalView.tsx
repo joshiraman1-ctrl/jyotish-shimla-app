@@ -90,7 +90,7 @@ export const JyotishShimlaPortalView: React.FC<JyotishShimlaPortalViewProps> = (
 
   const highlights = [
     {
-      title: 'देवभूमि शिमला परंपरा',
+      title: 'शिमला वैदिक परंपरा',
       desc: 'हिमालयी ऋषियों व महर्षि पराशर की पावन वैदिक ज्योतिषीय परंपरा पर आधारित।',
     },
     {
@@ -121,11 +121,11 @@ export const JyotishShimlaPortalView: React.FC<JyotishShimlaPortalViewProps> = (
           </div>
 
           <h1 className="text-2xl sm:text-4xl font-serif font-extrabold text-white tracking-wide leading-tight drop-shadow-sm">
-            ज्योतिष शिमला (Jyotish Shimla) • देवभूमि वैदिक ज्योतिष संस्थान
+            ज्योतिष शिमला (Jyotish Shimla) • वैदिक ज्योतिष संस्थान
           </h1>
 
           <p className="text-sm sm:text-base text-amber-100 leading-relaxed font-medium">
-            देवभूमि हिमाचल प्रदेश, शिमला की पावन धरा से संचालित प्रामाणिक वैदिक ज्योतिष केंद्र। जन्म कुंडली निर्माण, महादशा फलादेश, विवाह मिलान, रत्न परामर्श, कालसर्प शांति एवं वास्तु परामर्श हेतु सर्वमान्य व विश्वसनीय मार्गदर्शन।
+            हिमाचल प्रदेश, शिमला की पावन धरा से संचालित प्रामाणिक वैदिक ज्योतिष केंद्र। जन्म कुंडली निर्माण, महादशा फलादेश, विवाह मिलान, रत्न परामर्श, कालसर्प शांति एवं वास्तु परामर्श हेतु सर्वमान्य व विश्वसनीय मार्गदर्शन।
           </p>
 
           {/* Action Row */}
@@ -277,7 +277,7 @@ export const JyotishShimlaPortalView: React.FC<JyotishShimlaPortalViewProps> = (
               <MapPin className="w-4 h-4 text-orange-600" /> केंद्र स्थान:
             </span>
             <p className="text-stone-700 font-medium">
-              शिमला (देवभूमि), हिमाचल प्रदेश, भारत - 171001
+              शिमला, हिमाचल प्रदेश, भारत - 171001
             </p>
           </div>
 

@@ -199,21 +199,6 @@ export const BirthInputForm: React.FC<BirthInputFormProps> = ({
               </button>
             </div>
 
-            {/* Quick Preset Pills */}
-            <div className="flex flex-wrap gap-1.5 mt-2">
-              <span className="text-[10px] text-stone-500 font-bold self-center">त्वरित चुनें:</span>
-              {CITY_PRESETS.slice(0, 6).map((cp, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => handleCitySelect(cp)}
-                  className="text-[10px] bg-orange-50 hover:bg-orange-100 text-orange-900 px-2 py-0.5 rounded border border-orange-200 font-medium transition-colors"
-                >
-                  {cp.name.split('(')[0].trim()}
-                </button>
-              ))}
-            </div>
-
             {/* City Suggestions Dropdown */}
             {showCityDropdown && (
               <div className="absolute z-30 left-0 right-0 mt-1 bg-white border-2 border-orange-300 rounded-xl shadow-2xl max-h-56 overflow-y-auto p-1.5 scrollbar-thin scrollbar-thumb-orange-400">
@@ -267,42 +252,22 @@ export const BirthInputForm: React.FC<BirthInputFormProps> = ({
           </span>
         </div>
 
-        {/* Two Division Calculation Buttons */}
-        <div className="pt-3 grid grid-cols-2 gap-3">
+        {/* Single Comprehensive Calculation Button */}
+        <div className="pt-3">
           <button
-            type="button"
-            onClick={() => handleCalculateWithMode('analysis')}
+            type="submit"
             disabled={isLoading}
-            className="px-4 py-3.5 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold shadow-lg shadow-orange-600/20 border border-orange-400/40 flex items-center justify-center gap-2 transition-all transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 text-xs sm:text-sm font-serif"
+            className="w-full px-4 py-3.5 rounded-xl bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold shadow-lg shadow-orange-600/25 border border-orange-400/40 flex items-center justify-center gap-2 transition-all transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 text-xs sm:text-sm font-serif"
           >
             {isLoading ? (
               <>
                 <RotateCcw className="w-4 h-4 animate-spin text-amber-200" />
-                <span>संकलन हो रहा है...</span>
+                <span>कुण्डली गणना एवं संकलन हो रहा है...</span>
               </>
             ) : (
               <>
                 <Sparkles className="w-4 h-4 text-amber-200" />
-                <span>1. विश्लेषण एवं फलादेश</span>
-              </>
-            )}
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleCalculateWithMode('calculations')}
-            disabled={isLoading}
-            className="px-4 py-3.5 rounded-xl bg-gradient-to-r from-amber-600 to-orange-700 hover:from-amber-500 hover:to-orange-600 text-white font-bold shadow-lg shadow-orange-600/20 border border-orange-400/40 flex items-center justify-center gap-2 transition-all transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 text-xs sm:text-sm font-serif"
-          >
-            {isLoading ? (
-              <>
-                <RotateCcw className="w-4 h-4 animate-spin text-amber-200" />
-                <span>संकलन हो रहा है...</span>
-              </>
-            ) : (
-              <>
-                <Compass className="w-4 h-4 text-amber-200" />
-                <span>2. गणितीय गणना एवं चक्र</span>
+                <span>कुण्डली देखें एवं संपूर्ण फलादेश प्राप्त करें</span>
               </>
             )}
           </button>

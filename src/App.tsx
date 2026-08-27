@@ -47,7 +47,7 @@ const DEFAULT_BIRTH_DETAILS: BirthDetails = {
   gender: 'male',
   dateOfBirth: '',
   timeOfBirth: '12:00',
-  placeOfBirth: 'Shimla, Himachal Pradesh (देवभूमि)',
+  placeOfBirth: 'Shimla, Himachal Pradesh',
   latitude: 31.1048,
   longitude: 77.1734,
   timezone: 5.5,

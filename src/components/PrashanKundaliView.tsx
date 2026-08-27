@@ -177,7 +177,7 @@ export const PrashanKundaliView: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('career');
   const [questionText, setQuestionText] = useState<string>('क्या मुझे नई नौकरी अथवा पदोन्नति प्राप्त होगी?');
   const [prashnaNumber, setPrashnaNumber] = useState<number>(108);
-  const [cityName, setCityName] = useState<string>('शिमला, हिमाचल प्रदेश (Devbhoomi Shimla)');
+  const [cityName, setCityName] = useState<string>('शिमला, हिमाचल प्रदेश (Shimla)');
   const [currentDateTime, setCurrentDateTime] = useState<string>('');
   const [isLiveClock, setIsLiveClock] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);

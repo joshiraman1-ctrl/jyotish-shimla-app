@@ -35,17 +35,7 @@ export const KundaliChart: React.FC<KundaliChartProps> = ({
   initialSection,
   initialSubView,
 }) => {
-  const [activeSection, setActiveSection] = useState<'all' | 'charts' | 'analysis' | 'dasha' | 'gochar'>(
-    initialSection || (initialSubView === 'analysis' ? 'analysis' : initialSubView === 'calculations' ? 'charts' : 'all')
-  );
 
-  useEffect(() => {
-    if (initialSection) {
-      setActiveSection(initialSection);
-    } else if (initialSubView) {
-      setActiveSection(initialSubView === 'analysis' ? 'analysis' : 'charts');
-    }
-  }, [initialSection, initialSubView]);
   const [chartType, setChartType] = useState<'north' | 'south'>('north');
   const [chartDivision, setChartDivision] = useState<'lagna' | 'navamsha' | 'both'>('both');
   const [selectedHouse, setSelectedHouse] = useState<number>(1);
@@ -491,82 +481,16 @@ export const KundaliChart: React.FC<KundaliChartProps> = ({
           </div>
         </div>
 
-        {/* Unified Section Navigation Tabs */}
-        <div className="flex flex-wrap items-center gap-2 pt-5 mt-4 border-t border-orange-200">
-          <span className="text-xs font-bold text-stone-600 mr-2">अनुभाग चुनें:</span>
-          <button
-            type="button"
-            onClick={() => setActiveSection('all')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-              activeSection === 'all'
-                ? 'bg-orange-600 text-white shadow-md'
-                : 'bg-white text-orange-950 hover:bg-orange-100 border border-orange-200'
-            }`}
-          >
-            <Star className="w-3.5 h-3.5" />
-            <span>सम्पूर्ण संयुक्त दृश्य</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveSection('charts')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-              activeSection === 'charts'
-                ? 'bg-orange-600 text-white shadow-md'
-                : 'bg-white text-orange-950 hover:bg-orange-100 border border-orange-200'
-            }`}
-          >
-            <Layers className="w-3.5 h-3.5" />
-            <span>लग्न व नवमांश चक्र</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveSection('analysis')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-              activeSection === 'analysis'
-                ? 'bg-orange-600 text-white shadow-md'
-                : 'bg-white text-orange-950 hover:bg-orange-100 border border-orange-200'
-            }`}
-          >
-            <BookOpen className="w-3.5 h-3.5" />
-            <span>कुंडली विश्लेषण व फलादेश</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveSection('dasha')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-              activeSection === 'dasha'
-                ? 'bg-orange-600 text-white shadow-md'
-                : 'bg-white text-orange-950 hover:bg-orange-100 border border-orange-200'
-            }`}
-          >
-            <Clock className="w-3.5 h-3.5" />
-            <span>विंशोत्तरी दशा चक्र</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveSection('gochar')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-              activeSection === 'gochar'
-                ? 'bg-orange-600 text-white shadow-md'
-                : 'bg-white text-orange-950 hover:bg-orange-100 border border-orange-200'
-            }`}
-          >
-            <Compass className="w-3.5 h-3.5" />
-            <span>वर्तमान ग्रह गोचर</span>
-          </button>
-        </div>
       </div>
 
-      {/* SECTION 1: LAGNA & NAVAMSHA CHARTS */}
-      {(activeSection === 'all' || activeSection === 'charts') && (
-        <div className="bg-white rounded-3xl border-2 border-orange-200 p-5 sm:p-7 shadow-lg shadow-orange-950/5 space-y-6">
+      {/* SECTION: MATHEMATICAL CALCULATION & CHARTS */}
+      <div className="bg-white rounded-3xl border-2 border-orange-200 p-5 sm:p-7 shadow-lg shadow-orange-950/5 space-y-6">
           {/* Header with Switchers */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-orange-100">
             <div>
+              <div className="inline-flex items-center gap-1.5 bg-orange-100 text-orange-950 px-2.5 py-0.5 rounded-full text-xs font-bold mb-1 border border-orange-200">
+                <Compass className="w-3.5 h-3.5 text-orange-600" /> गणितीय गणना एवं चक्र
+              </div>
               <h3 className="text-lg font-serif font-bold text-orange-950 flex items-center gap-2">
                 <Layers className="w-5 h-5 text-orange-600" />
                 जन्म लग्न चक्र (D-1) एवं नवमांश चक्र (D-9)
@@ -577,6 +501,8 @@ export const KundaliChart: React.FC<KundaliChartProps> = ({
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
+
+
               {/* Chart Format Switcher */}
               <div className="flex items-center bg-orange-50 p-1 rounded-xl border border-orange-200 text-xs">
                 <button
@@ -829,37 +755,84 @@ export const KundaliChart: React.FC<KundaliChartProps> = ({
               </table>
             </div>
           </div>
-        </div>
-      )}
 
-      {/* SECTION 2: KUNDALI VISHLESHAN & DETAILED ANALYSIS */}
-      {(activeSection === 'all' || activeSection === 'analysis') && (
-        <div className="space-y-6">
-          <KundaliAnalysisView
-            kundali={kundali}
-            onRefreshAI={onRefreshAI || (() => {})}
-            isLoadingAI={isLoadingAI || false}
-            initialSubView={initialSubView}
-          />
-        </div>
-      )}
+          {/* 12 Bhavas Mathematical Breakdown */}
+          <div className="space-y-3 pt-4 border-t border-orange-100">
+            <h4 className="text-sm font-bold text-orange-950 flex items-center gap-2">
+              <BookOpen className="w-4 h-4 text-orange-600" />
+              <span>द्वादश भाव स्पष्ट एवं अधिकार क्षेत्र (12 Houses Bhava Breakdown):</span>
+            </h4>
 
-      {/* SECTION 3: 120-YEAR VIMSHOTTARI DASHA */}
-      {(activeSection === 'all' || activeSection === 'dasha') && (
-        <div className="bg-white rounded-3xl border-2 border-orange-200 p-6 sm:p-8 shadow-lg shadow-orange-950/5 space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-orange-100">
-            <div>
-              <div className="inline-flex items-center gap-1.5 bg-orange-100 text-orange-950 px-2.5 py-0.5 rounded-full text-xs font-bold mb-1 border border-orange-200">
-                <Clock className="w-3.5 h-3.5 text-orange-600" /> कालक्रम व महादशा चक्र
-              </div>
-              <h3 className="text-xl font-serif font-bold text-orange-950">
-                120 वर्षीय विंशोत्तरी महादशा कालक्रम
-              </h3>
-              <p className="text-xs text-stone-600 mt-0.5">
-                किसी भी महादशा पर क्लिक करके उसका विस्तृत फलादेश, प्रभाव क्षेत्र एवं अचूक वैदिक उपाय देखें:
-              </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {houses.map((house: HouseInfo) => (
+                <div
+                  key={house.houseNumber}
+                  onClick={() => setSelectedHouse(house.houseNumber)}
+                  className={`p-3.5 rounded-2xl border transition-all cursor-pointer ${
+                    selectedHouse === house.houseNumber
+                      ? 'bg-orange-100/90 border-orange-500 ring-2 ring-orange-400/40 shadow-sm'
+                      : 'bg-orange-50/40 border-orange-200 hover:bg-orange-50 hover:border-orange-300'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="font-serif font-bold text-orange-950 text-xs sm:text-sm flex items-center gap-1.5">
+                      <span className="w-5 h-5 rounded-full bg-orange-600 text-white text-[10px] flex items-center justify-center font-sans">
+                        {house.houseNumber}
+                      </span>
+                      भाव {house.houseNumber} ({house.rashiHindi})
+                    </span>
+                    <span className="bg-orange-200/90 text-orange-950 font-bold px-2 py-0.5 rounded text-[10px]">
+                      स्वामी: {house.rashiLord}
+                    </span>
+                  </div>
+
+                  <p className="text-[11px] text-stone-700 font-medium line-clamp-2">
+                    <strong className="text-orange-950">महत्व:</strong> {house.significanceHindi}
+                  </p>
+
+                  <div className="text-[11px] text-stone-600 pt-2 mt-2 border-t border-orange-200/50 flex items-center justify-between">
+                    <span className="text-[10px] text-stone-500">स्थित ग्रह:</span>
+                    <div className="flex items-center gap-1 flex-wrap justify-end">
+                      {house.planets && house.planets.length > 0 ? (
+                        house.planets.map((pl: string) => (
+                          <span key={pl} className="bg-orange-200/90 text-orange-950 px-1.5 py-0.2 rounded text-[10px] font-bold">
+                            {pl}
+                          </span>
+                        ))
+                      ) : (
+                        <span className="italic text-[10px] text-stone-400">रिक्त</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
+        </div>
+
+      {/* SECTION 2: KUNDALI VISHLESHAN & DETAILED ANALYSIS */}
+      <div className="space-y-8">
+        <KundaliAnalysisView
+          kundali={kundali}
+          onRefreshAI={onRefreshAI || (() => {})}
+          isLoadingAI={isLoadingAI || false}
+        />
+
+          {/* SECTION 3: 120-YEAR VIMSHOTTARI DASHA */}
+          <div className="bg-white rounded-3xl border-2 border-orange-200 p-6 sm:p-8 shadow-lg shadow-orange-950/5 space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-orange-100">
+              <div>
+                <div className="inline-flex items-center gap-1.5 bg-orange-100 text-orange-950 px-2.5 py-0.5 rounded-full text-xs font-bold mb-1 border border-orange-200">
+                  <Clock className="w-3.5 h-3.5 text-orange-600" /> कालक्रम व महादशा चक्र
+                </div>
+                <h3 className="text-xl font-serif font-bold text-orange-950">
+                  120 वर्षीय विंशोत्तरी महादशा कालक्रम
+                </h3>
+                <p className="text-xs text-stone-600 mt-0.5">
+                  किसी भी महादशा पर क्लिक करके उसका विस्तृत फलादेश, प्रभाव क्षेत्र एवं अचूक वैदिक उपाय देखें:
+                </p>
+              </div>
+            </div>
 
           {/* Mahadasha Selector Pills */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 gap-2.5">
@@ -994,83 +967,80 @@ export const KundaliChart: React.FC<KundaliChartProps> = ({
               </table>
             </div>
           </div>
-        </div>
-      )}
-
-      {/* SECTION 3: PLANETARY TRANSITS (GOCHAR) */}
-      {(activeSection === 'all' || activeSection === 'gochar') && (
-        <div className="bg-white rounded-3xl border-2 border-orange-200 p-6 sm:p-8 shadow-lg shadow-orange-950/5 space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-orange-100">
-            <div>
-              <div className="inline-flex items-center gap-1.5 bg-amber-100 text-orange-900 px-2.5 py-0.5 rounded-full text-[11px] font-bold mb-1 border border-amber-200">
-                <Compass className="w-3.5 h-3.5 text-orange-600" /> तात्कालिक आकाशीय ग्रह गोचर
+          {/* SECTION 4: PLANETARY TRANSITS (GOCHAR) */}
+          <div className="bg-white rounded-3xl border-2 border-orange-200 p-6 sm:p-8 shadow-lg shadow-orange-950/5 space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-orange-100">
+              <div>
+                <div className="inline-flex items-center gap-1.5 bg-amber-100 text-orange-900 px-2.5 py-0.5 rounded-full text-[11px] font-bold mb-1 border border-amber-200">
+                  <Compass className="w-3.5 h-3.5 text-orange-600" /> तात्कालिक आकाशीय ग्रह गोचर
+                </div>
+                <h3 className="text-xl font-serif font-bold text-orange-950">
+                  वर्तमान ग्रह गोचर स्थिति व प्रभाव
+                </h3>
+                <p className="text-xs text-stone-600 mt-0.5">
+                  जातक की जन्म चन्द्र राशि (<strong className="text-orange-950">{lagnaRashi.moonSignHindi}</strong>) एवं जन्म लग्न (<strong className="text-orange-950">{lagnaRashi.lagnaHindi}</strong>) के सापेक्ष वर्तमान गोचर प्रभाव:
+                </p>
               </div>
-              <h3 className="text-xl font-serif font-bold text-orange-950">
-                वर्तमान ग्रह गोचर स्थिति व प्रभाव
-              </h3>
-              <p className="text-xs text-stone-600 mt-0.5">
-                जातक की जन्म चन्द्र राशि (<strong className="text-orange-950">{lagnaRashi.moonSignHindi}</strong>) एवं जन्म लग्न (<strong className="text-orange-950">{lagnaRashi.lagnaHindi}</strong>) के सापेक्ष वर्तमान गोचर प्रभाव:
-              </p>
             </div>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {transits.map((tr, i) => {
-              const isGood = tr.effect === 'Auspicious';
-              const isChallenging = tr.effect === 'Challenging';
-              return (
-                <div
-                  key={i}
-                  className={`p-5 rounded-2xl border-2 transition-all ${
-                    isGood
-                      ? 'border-emerald-200 bg-emerald-50/40'
-                      : isChallenging
-                      ? 'border-amber-300 bg-amber-50/40'
-                      : 'border-orange-100 bg-orange-50/20'
-                  }`}
-                >
-                  <div className="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-stone-200/50">
-                    <div className="flex items-center gap-2">
-                      <span className="font-bold text-sm text-stone-900">
-                        {kundali.planets[tr.planet]?.hindiName || tr.planet} गोचर
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {transits.map((tr, i) => {
+                const isGood = tr.effect === 'Auspicious';
+                const isChallenging = tr.effect === 'Challenging';
+                return (
+                  <div
+                    key={i}
+                    className={`p-5 rounded-2xl border-2 transition-all ${
+                      isGood
+                        ? 'border-emerald-200 bg-emerald-50/40'
+                        : isChallenging
+                        ? 'border-amber-300 bg-amber-50/40'
+                        : 'border-orange-100 bg-orange-50/20'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-stone-200/50">
+                      <div className="flex items-center gap-2">
+                        <span className="font-bold text-sm text-stone-900">
+                          {kundali.planets[tr.planet]?.hindiName || tr.planet} गोचर
+                        </span>
+                      </div>
+                      <span
+                        className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border ${
+                          isGood
+                            ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                            : isChallenging
+                            ? 'bg-amber-100 text-amber-800 border-amber-300'
+                            : 'bg-stone-100 text-stone-800 border-stone-300'
+                        }`}
+                      >
+                        {isGood ? 'शुभ फलदायी' : isChallenging ? 'सतर्कता / शांति' : 'सम फल'}
                       </span>
                     </div>
-                    <span
-                      className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border ${
-                        isGood
-                          ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
-                          : isChallenging
-                          ? 'bg-amber-100 text-amber-800 border-amber-300'
-                          : 'bg-stone-100 text-stone-800 border-stone-300'
-                      }`}
-                    >
-                      {isGood ? 'शुभ फलदायी' : isChallenging ? 'सतर्कता / शांति' : 'सम फल'}
-                    </span>
-                  </div>
 
-                  <div className="space-y-1.5 text-xs text-stone-700">
-                    <div className="flex justify-between">
-                      <span className="text-stone-500">गोचर राशि:</span>
-                      <strong className="text-orange-950 font-bold">{tr.currentSignHindi} राशि</strong>
+                    <div className="space-y-1.5 text-xs text-stone-700">
+                      <div className="flex justify-between">
+                        <span className="text-stone-500">गोचर राशि:</span>
+                        <strong className="text-orange-950 font-bold">{tr.currentSignHindi} राशि</strong>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-stone-500">चन्द्र से भाव:</span>
+                        <strong className="text-stone-900">{tr.houseFromMoon} वां भाव</strong>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-stone-500">लग्न से भाव:</span>
+                        <strong className="text-stone-900">{tr.houseFromLagna} वां भाव</strong>
+                      </div>
+                      <p className="text-stone-700 text-[11px] pt-1.5 border-t border-stone-200/40 leading-relaxed font-medium">
+                        {tr.description}
+                      </p>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-stone-500">चन्द्र से भाव:</span>
-                      <strong className="text-stone-900">{tr.houseFromMoon} वां भाव</strong>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-stone-500">लग्न से भाव:</span>
-                      <strong className="text-stone-900">{tr.houseFromLagna} वां भाव</strong>
-                    </div>
-                    <p className="text-stone-700 text-[11px] pt-1.5 border-t border-stone-200/40 leading-relaxed font-medium">
-                      {tr.description}
-                    </p>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };

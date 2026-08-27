@@ -13,7 +13,7 @@ export const translations: Record<AppLanguage, Record<string, string>> = {
     // Header & Meta
     'app.title': 'ज्योतिष शिमला',
     'app.subtitle': 'वैदिक ज्योतिष एवं बहुआयामी चेतना प्रणाली',
-    'app.tagline': 'देवभूमि हिमाचल • ज्योतिष शिमला',
+    'app.tagline': 'ज्योतिष शिमला',
     'app.principles': 'वैदिक पराशर सिद्धांत • महर्षि जैमिनी सूत्र • प्रामाणिक गणना',
     'app.official_website': 'आधिकारिक वेबसाइट ज्योतिष शिमला',
 
@@ -33,7 +33,7 @@ export const translations: Record<AppLanguage, Record<string, string>> = {
     'tab.editor': 'पेज व कोड संपादक',
 
     // Home Hero
-    'hero.badge': 'देवभूमि हिमाचल • ज्योतिष शिमला आधिकारिक बुद्धि इंजन',
+    'hero.badge': 'ज्योतिष शिमला आधिकारिक बुद्धि इंजन',
     'hero.title': 'प्रामाणिक वैदिक ज्योतिष एवं बहुआयामी चेतना प्रणाली',
     'hero.desc': 'महर्षि पराशर एवं जैमिनी सूत्रों पर आधारित सटीक लग्न, राशि, ग्रह स्थिति, विंशोत्तरी महादशा, गोचर, मांगलिक व साढ़ेसाती विश्लेषण, सटीक रत्न विधान तथा चेतना का मार्गदर्शन प्राप्त करें।',
     'hero.btn_kundali': 'जन्म विवरण, चक्र व विश्लेषण',
@@ -115,7 +115,7 @@ export const translations: Record<AppLanguage, Record<string, string>> = {
     // Header & Meta
     'app.title': 'Jyotish Shimla',
     'app.subtitle': 'Vedic Astrology & Multi-Dimensional Consciousness System',
-    'app.tagline': 'Devbhoomi Himachal • Jyotish Shimla',
+    'app.tagline': 'Jyotish Shimla',
     'app.principles': 'Parashara Principles • Jaimini Sutras • Authentic Calculations',
     'app.official_website': 'Official Jyotish Shimla Website',
 
@@ -135,7 +135,7 @@ export const translations: Record<AppLanguage, Record<string, string>> = {
     'tab.editor': 'Page & Code Editor',
 
     // Home Hero
-    'hero.badge': 'Devbhoomi Himachal • Jyotish Shimla Official AI Engine',
+    'hero.badge': 'Jyotish Shimla Official AI Engine',
     'hero.title': 'Authentic Vedic Astrology & Multi-Dimensional Consciousness System',
     'hero.desc': 'Receive precise Lagna, Rashi, Planetary positions, Vimshottari Mahadasha, Transits, Manglik/Sade Sati reports, Gemstone recommendations, and 1D-12D Consciousness guidance based on Maharshi Parashara principles.',
     'hero.btn_kundali': 'Birth Details, Charts & Analysis',
