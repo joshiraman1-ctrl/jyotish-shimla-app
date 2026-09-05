@@ -179,71 +179,46 @@ export const KundaliAnalysisView: React.FC<KundaliAnalysisViewProps> = ({
         </div>
       </div>
 
-      {/* Analysis Action Bar & Section Info */}
-      <div className="bg-orange-50/90 p-4 rounded-2xl border-2 border-orange-300 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-xl bg-orange-600 text-white flex items-center justify-center font-bold text-xs shadow-sm">
-            <Sparkles className="w-4 h-4 text-amber-200" />
-          </div>
-          <div>
-            <h3 className="text-sm font-serif font-bold text-orange-950">
-              1. विस्तृत वैदिक विश्लेषण एवं फलादेश (Analysis & Predictions)
-            </h3>
-            <p className="text-[11px] text-stone-600">
-              चार स्तंभ विश्लेषण, महादशा फल, दोष निवारण व सटीक वैदिक उपाय
-            </p>
-          </div>
-        </div>
-
-        {/* Action Controls for AI / Copy / Print */}
-        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end">
-
-          <button
-            type="button"
-            onClick={onRefreshAI}
-            disabled={isLoadingAI}
-            className="px-3 py-2 rounded-xl bg-orange-100 hover:bg-orange-200 text-orange-950 text-xs font-semibold border border-orange-300 flex items-center gap-1.5 transition-colors disabled:opacity-50"
-            title="पुनः गहन विश्लेषण करें"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${isLoadingAI ? 'animate-spin' : ''}`} />
-            <span>रीफ्रेश AI</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={handleCopyText}
-            className="px-3 py-2 rounded-xl bg-white hover:bg-orange-100 text-orange-950 text-xs font-semibold border border-orange-300 flex items-center gap-1.5 transition-colors"
-          >
-            {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-orange-600" />}
-            <span>{copied ? 'कॉपी हुआ' : 'कॉपी'}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={handlePrint}
-            className="px-3 py-2 rounded-xl bg-white hover:bg-orange-100 text-orange-950 text-xs font-semibold border border-orange-300 flex items-center gap-1.5 transition-colors"
-          >
-            <Printer className="w-3.5 h-3.5 text-orange-600" />
-            <span>प्रिंट</span>
-          </button>
-        </div>
-      </div>
-
       {/* Main Astrological Synthesis Text formatted with mandated sections */}
-      <div className="bg-white rounded-2xl border-2 border-orange-200 p-6 sm:p-8 shadow-lg shadow-orange-950/5">
-        <div className="flex items-center justify-between pb-4 mb-6 border-b border-orange-100">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-orange-600 text-white flex items-center justify-center font-serif font-bold shadow-md">
+      <div className="bg-white rounded-2xl border-2 border-orange-200 p-6 sm:p-8 shadow-lg shadow-orange-950/5 space-y-4">
+        {/* Action Controls & Header */}
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-orange-100">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-xl bg-orange-600 text-white flex items-center justify-center font-serif font-bold text-xs shadow-sm">
               ॐ
             </div>
-            <div>
-              <h3 className="text-lg font-serif font-bold text-orange-950">
-                वैदिक कुंडली विस्तृत विश्लेषण (Four Pillars of Jyotish Analysis)
-              </h3>
-              <p className="text-xs text-stone-600">
-                लग्न, राशि, ग्रह स्थिति, महादशा, त्रिकोण फल एवं वैदिक उपाय
-              </p>
-            </div>
+            <span className="text-sm font-serif font-bold text-orange-950">वैदिक फलादेश एवं विश्लेषण</span>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={onRefreshAI}
+              disabled={isLoadingAI}
+              className="px-3 py-1.5 rounded-xl bg-orange-100 hover:bg-orange-200 text-orange-950 text-xs font-semibold border border-orange-300 flex items-center gap-1.5 transition-colors disabled:opacity-50"
+              title="पुनः गहन विश्लेषण करें"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isLoadingAI ? 'animate-spin' : ''}`} />
+              <span>रीफ्रेश AI</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleCopyText}
+              className="px-3 py-1.5 rounded-xl bg-white hover:bg-orange-100 text-orange-950 text-xs font-semibold border border-orange-300 flex items-center gap-1.5 transition-colors"
+            >
+              {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-orange-600" />}
+              <span>{copied ? 'कॉपी हुआ' : 'कॉपी'}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handlePrint}
+              className="px-3 py-1.5 rounded-xl bg-white hover:bg-orange-100 text-orange-950 text-xs font-semibold border border-orange-300 flex items-center gap-1.5 transition-colors"
+            >
+              <Printer className="w-3.5 h-3.5 text-orange-600" />
+              <span>प्रिंट</span>
+            </button>
           </div>
         </div>
 

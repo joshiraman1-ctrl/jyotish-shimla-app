@@ -86,18 +86,7 @@ export const BirthInputForm: React.FC<BirthInputFormProps> = ({
 
   return (
     <div className="bg-white rounded-2xl border-2 border-orange-200 p-5 sm:p-7 shadow-lg shadow-orange-950/5 backdrop-blur-sm">
-      {/* Form Header */}
-      <div className="pb-5 mb-6 border-b border-orange-100">
-        <div className="flex items-center gap-2">
-          <Compass className="w-5 h-5 text-orange-600" />
-          <h2 className="text-lg sm:text-xl font-serif font-bold text-orange-950">
-            प्राथमिक जन्म विवरण
-          </h2>
-        </div>
-        <p className="text-xs sm:text-sm text-stone-600 mt-1">
-          सटीक लग्न, राशि, नक्षत्र, ग्रह स्थिति एवं महादशा गणना हेतु अपना जन्म विवरण दर्ज करें।
-        </p>
-      </div>
+
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
@@ -117,32 +106,7 @@ export const BirthInputForm: React.FC<BirthInputFormProps> = ({
             />
           </div>
 
-          {/* Gender */}
-          <div>
-            <label className="block text-xs font-semibold text-orange-950 mb-1.5">
-              लिंग
-            </label>
-            <div className="grid grid-cols-3 gap-2">
-              {[
-                { id: 'male', label: 'पुरुष' },
-                { id: 'female', label: 'महिला' },
-                { id: 'other', label: 'अन्य' },
-              ].map((item) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => setGender(item.id as any)}
-                  className={`py-2.5 px-2 rounded-lg text-xs font-semibold border transition-all ${
-                    gender === item.id
-                      ? 'bg-gradient-to-r from-orange-600 to-amber-600 text-white border-orange-500 shadow'
-                      : 'bg-orange-50/40 text-stone-700 border-orange-200 hover:bg-orange-100'
-                  }`}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
-          </div>
+
 
           {/* Date of Birth */}
           <div>

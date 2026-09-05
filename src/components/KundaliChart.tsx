@@ -18,7 +18,7 @@ import {
   Star,
   BookOpen,
 } from 'lucide-react';
-import { KundaliAnalysisView } from './KundaliAnalysisView';
+
 
 interface KundaliChartProps {
   kundali: KundaliAnalysisResult;
@@ -407,80 +407,152 @@ export const KundaliChart: React.FC<KundaliChartProps> = ({
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-orange-200">
           <div>
             <div className="inline-flex items-center gap-1.5 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-sm mb-2">
-              <Layers className="w-3.5 h-3.5 text-amber-200" /> सम्पूर्ण कुण्डली, नवमांश, दशा व गोचर चक्र
+              <Layers className="w-3.5 h-3.5 text-amber-200" /> कुंडली का विश्लेषण
             </div>
             <h2 className="text-xl sm:text-2xl font-serif font-extrabold text-orange-950">
-              लग्न चक्र, नवमांश (D-9), विंशोत्तरी दशा व गोचर (Kundali & Dasha Matrix)
+              कुंडली का विश्लेषण (Kundali Analysis)
             </h2>
-            <p className="text-xs sm:text-sm text-stone-700 mt-1 font-medium">
-              लग्न: <strong className="text-orange-950">{lagnaRashi.lagnaHindi} ({lagnaRashi.lagnaEng})</strong> | चन्द्र राशि: <strong className="text-orange-950">{lagnaRashi.moonSignHindi} ({lagnaRashi.moonSignEng})</strong> | नक्षत्र: <strong className="text-orange-950">{lagnaRashi.nakshatra} (चरण {lagnaRashi.nakshatraPada})</strong> | नवांश लग्न: <strong className="text-orange-950">{RASHI_NAMES_HINDI[navamshaLagnaIndex]}</strong>
-            </p>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="bg-white px-4 py-2.5 rounded-2xl border border-orange-200 shadow-sm text-right">
-              <span className="text-[10px] text-stone-500 font-bold block uppercase">जन्म समय दशा शेष</span>
-              <span className="text-xs sm:text-sm font-bold text-orange-900">
-                {dasha.dashaBalanceAtBirth}
-              </span>
+            {/* Birth Details Cards Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 pt-3">
+              <div className="bg-white/90 p-3 rounded-xl border border-orange-200 shadow-sm">
+                <span className="text-[10px] text-stone-500 font-bold block">लग्न (Lagna)</span>
+                <span className="text-xs sm:text-sm font-extrabold text-orange-950 block truncate">
+                  {lagnaRashi.lagnaHindi} ({lagnaRashi.lagnaEng})
+                </span>
+              </div>
+              <div className="bg-white/90 p-3 rounded-xl border border-orange-200 shadow-sm">
+                <span className="text-[10px] text-stone-500 font-bold block">चन्द्र राशि (Moon Sign)</span>
+                <span className="text-xs sm:text-sm font-extrabold text-orange-950 block truncate">
+                  {lagnaRashi.moonSignHindi} ({lagnaRashi.moonSignEng})
+                </span>
+              </div>
+              <div className="bg-white/90 p-3 rounded-xl border border-orange-200 shadow-sm">
+                <span className="text-[10px] text-stone-500 font-bold block">नक्षत्र (Nakshatra)</span>
+                <span className="text-xs sm:text-sm font-extrabold text-orange-950 block truncate">
+                  {lagnaRashi.nakshatra} (चरण {lagnaRashi.nakshatraPada})
+                </span>
+              </div>
+              <div className="bg-white/90 p-3 rounded-xl border border-orange-200 shadow-sm">
+                <span className="text-[10px] text-stone-500 font-bold block">नवांश लग्न (Navamsha)</span>
+                <span className="text-xs sm:text-sm font-extrabold text-orange-950 block truncate">
+                  {RASHI_NAMES_HINDI[navamshaLagnaIndex]}
+                </span>
+              </div>
             </div>
+
+            {/* Dosha Summary Strip */}
+            {(() => {
+              const gandmoolNakshatras = ['अश्विनी', 'आश्लेषा', 'मघा', 'ज्येष्ठा', 'मूल', 'रेवती'];
+              const hasGandmool = gandmoolNakshatras.some(n => lagnaRashi.nakshatra?.includes(n));
+              return (
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 pt-3.5 mt-3.5 border-t border-orange-200/60">
+                  <div className="bg-white p-2.5 rounded-xl border border-orange-200 shadow-xs">
+                    <span className="text-[10px] text-stone-500 font-bold block">कालसर्प दोष</span>
+                    <span className={`text-xs font-bold ${doshas.hasKaalSarpDosha ? 'text-red-600' : 'text-emerald-700'}`}>
+                      {doshas.hasKaalSarpDosha ? (doshas.kaalSarpType || 'उपस्थित') : 'दोष मुक्त'}
+                    </span>
+                  </div>
+                  <div className="bg-white p-2.5 rounded-xl border border-orange-200 shadow-xs">
+                    <span className="text-[10px] text-stone-500 font-bold block">मांगलिक दोष</span>
+                    <span className={`text-xs font-bold ${doshas.hasManglikDosha ? 'text-amber-700' : 'text-emerald-700'}`}>
+                      {doshas.hasManglikDosha ? (doshas.manglikSeverity || 'उपस्थित') : 'दोष मुक्त'}
+                    </span>
+                  </div>
+                  <div className="bg-white p-2.5 rounded-xl border border-orange-200 shadow-xs">
+                    <span className="text-[10px] text-stone-500 font-bold block">पितृ दोष</span>
+                    <span className={`text-xs font-bold ${doshas.hasPitraDosha ? 'text-red-600' : 'text-emerald-700'}`}>
+                      {doshas.hasPitraDosha ? 'उपस्थित' : 'दोष मुक्त'}
+                    </span>
+                  </div>
+                  <div className="bg-white p-2.5 rounded-xl border border-orange-200 shadow-xs">
+                    <span className="text-[10px] text-stone-500 font-bold block">शनि साढ़ेसाती</span>
+                    <span className={`text-xs font-bold ${doshas.hasSadeSati ? 'text-indigo-800' : 'text-emerald-700'}`}>
+                      {doshas.hasSadeSati ? (doshas.sadeSatiPhase || 'सक्रिय') : 'प्रभाव मुक्त'}
+                    </span>
+                  </div>
+                  <div className="bg-white p-2.5 rounded-xl border border-orange-200 shadow-xs col-span-2 sm:col-span-1">
+                    <span className="text-[10px] text-stone-500 font-bold block">गंडमूल दोष</span>
+                    <span className={`text-xs font-bold ${hasGandmool ? 'text-amber-700' : 'text-emerald-700'}`}>
+                      {hasGandmool ? 'गंधमूल नक्षत्र' : 'दोष मुक्त'}
+                    </span>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Current Active Dasha Strip placed right below birth details */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4">
+              {(() => {
+                const activeMaha = dasha.mahadashas?.find(m => m.isCurrent) || dasha.mahadashas?.[0];
+                const activeAntar = dasha.antardashas?.find(a => a.isCurrent) || dasha.antardashas?.[0];
+                
+                const mahaStart = activeMaha ? new Date(activeMaha.startDate).toLocaleDateString('hi-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+                const mahaEnd = activeMaha ? new Date(activeMaha.endDate).toLocaleDateString('hi-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+                const mahaDuration = mahaStart && mahaEnd ? `${mahaStart} से ${mahaEnd}` : '';
+                
+                const antarStart = activeAntar ? new Date(activeAntar.startDate).toLocaleDateString('hi-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+                const antarEnd = activeAntar ? new Date(activeAntar.endDate).toLocaleDateString('hi-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+                const antarDuration = antarStart && antarEnd ? `${antarStart} से ${antarEnd}` : '';
+                
+                return (
+                  <>
+                    <div className="bg-white p-3.5 rounded-2xl border-2 border-orange-300 shadow-sm flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-xl bg-orange-600 text-white flex items-center justify-center font-bold text-xs shadow shrink-0">
+                        महा
+                      </div>
+                      <div className="min-w-0">
+                        <span className="text-[10px] text-stone-500 font-bold block">वर्तमान महादशा (जन्म दशा शेष: {dasha.dashaBalanceAtBirth})</span>
+                        <span className="text-xs sm:text-sm font-extrabold text-orange-950 block truncate">
+                          {kundali.planets[dasha.currentMahadasha]?.hindiName || dasha.currentMahadasha} की महादशा
+                        </span>
+                        {mahaDuration && <span className="text-[10px] font-bold text-orange-700 bg-orange-50 px-1.5 py-0.5 rounded border border-orange-200 mt-0.5 inline-block">अवधि: {mahaDuration}</span>}
+                      </div>
+                    </div>
+
+                    <div className="bg-white p-3.5 rounded-2xl border-2 border-amber-300 shadow-sm flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center font-bold text-xs shadow shrink-0">
+                        अंतर
+                      </div>
+                      <div className="min-w-0">
+                        <span className="text-[10px] text-stone-500 font-bold block">वर्तमान अंतर्दशा</span>
+                        <span className="text-xs sm:text-sm font-extrabold text-amber-950 block truncate">
+                          {kundali.planets[dasha.currentAntardasha]?.hindiName || dasha.currentAntardasha} की अंतर्दशा
+                        </span>
+                        {antarDuration && <span className="text-[10px] font-bold text-amber-800 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200 mt-0.5 inline-block">अवधि: {antarDuration}</span>}
+                      </div>
+                    </div>
+                  </>
+                );
+              })()}
+
+              <div className="bg-white p-3.5 rounded-2xl border-2 border-orange-200 shadow-sm flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-400 to-amber-500 text-white flex items-center justify-center font-bold text-xs shadow shrink-0">
+                  प्रत्यं
+                </div>
+                <div className="min-w-0">
+                  <span className="text-[10px] text-stone-500 font-bold block">वर्तमान प्रत्यंतर्दशा</span>
+                  <span className="text-xs sm:text-sm font-extrabold text-stone-900 block truncate">
+                    {dasha.currentPratyantardasha
+                      ? kundali.planets[dasha.currentPratyantardasha]?.hindiName || dasha.currentPratyantardasha
+                      : kundali.planets[dasha.currentAntardasha]?.hindiName}{' '}
+                    सूक्ष्म
+                  </span>
+                  {(() => {
+                    const activeAntar = dasha.antardashas?.find(a => a.isCurrent) || dasha.antardashas?.[0];
+                    const pStart = activeAntar ? new Date(activeAntar.startDate).toLocaleDateString('hi-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+                    const pEnd = activeAntar ? new Date(activeAntar.endDate).toLocaleDateString('hi-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+                    return pStart && pEnd ? (
+                      <span className="text-[10px] font-bold text-orange-800 bg-orange-50 px-1.5 py-0.5 rounded border border-orange-200 mt-0.5 inline-block">अवधि: {pStart} से {pEnd}</span>
+                    ) : (
+                      <span className="text-[10px] font-bold text-orange-800 bg-orange-50 px-1.5 py-0.5 rounded border border-orange-200 mt-0.5 inline-block">अवधि: 2-3 माह सक्रिय</span>
+                    );
+                  })()}
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
-
-        {/* Current Active Dasha & Sade Sati Strip */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-4">
-          <div className="bg-white p-3.5 rounded-2xl border-2 border-orange-300 shadow-sm flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-orange-600 text-white flex items-center justify-center font-bold text-xs shadow">
-              महा
-            </div>
-            <div>
-              <span className="text-[10px] text-stone-500 font-bold block">वर्तमान महादशा</span>
-              <span className="text-xs sm:text-sm font-extrabold text-orange-950">
-                {kundali.planets[dasha.currentMahadasha]?.hindiName || dasha.currentMahadasha} की महादशा
-              </span>
-            </div>
-          </div>
-
-          <div className="bg-white p-3.5 rounded-2xl border-2 border-amber-300 shadow-sm flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center font-bold text-xs shadow">
-              अंतर
-            </div>
-            <div>
-              <span className="text-[10px] text-stone-500 font-bold block">वर्तमान अंतर्दशा</span>
-              <span className="text-xs sm:text-sm font-extrabold text-amber-950">
-                {kundali.planets[dasha.currentAntardasha]?.hindiName || dasha.currentAntardasha} की अंतर्दशा
-              </span>
-            </div>
-          </div>
-
-          <div className="bg-white p-3.5 rounded-2xl border-2 border-orange-200 shadow-sm flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-400 to-amber-500 text-white flex items-center justify-center font-bold text-xs shadow">
-              प्रत्यं
-            </div>
-            <div>
-              <span className="text-[10px] text-stone-500 font-bold block">वर्तमान प्रत्यंतर्दशा</span>
-              <span className="text-xs sm:text-sm font-extrabold text-stone-900">
-                {dasha.currentPratyantardasha
-                  ? kundali.planets[dasha.currentPratyantardasha]?.hindiName || dasha.currentPratyantardasha
-                  : kundali.planets[dasha.currentAntardasha]?.hindiName}{' '}
-                सूक्ष्म
-              </span>
-            </div>
-          </div>
-
-          <div className="bg-white p-3.5 rounded-2xl border-2 border-orange-200 shadow-sm flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-xs shadow">
-              शनि
-            </div>
-            <div>
-              <span className="text-[10px] text-stone-500 font-bold block">शनि साढ़ेसाती / ढैया</span>
-              <span className="text-xs sm:text-sm font-extrabold text-indigo-950">
-                {doshas.hasSadeSati ? `${doshas.sadeSatiPhase || 'सक्रिय'}` : 'साढ़ेसाती प्रभाव मुक्त'}
-              </span>
-            </div>
-          </div>
-        </div>
-
       </div>
 
       {/* SECTION: MATHEMATICAL CALCULATION & CHARTS */}
@@ -569,10 +641,10 @@ export const KundaliChart: React.FC<KundaliChartProps> = ({
           </div>
 
           {/* Visual SVG Charts Row */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <div className="flex flex-col items-center justify-center">
             {/* Chart Container(s) */}
-            <div className={`${chartDivision === 'both' ? 'lg:col-span-8' : 'lg:col-span-7'} space-y-4`}>
-              <div className={`grid ${chartDivision === 'both' ? 'grid-cols-1 md:grid-cols-2 gap-4' : 'grid-cols-1'} items-center`}>
+            <div className="w-full max-w-3xl space-y-4">
+              <div className={`grid ${chartDivision === 'both' ? 'grid-cols-1 md:grid-cols-2 gap-6' : 'grid-cols-1'} items-center justify-items-center`}>
                 {/* D-1 Lagna Chart */}
                 {(chartDivision === 'both' || chartDivision === 'lagna') && (
                   <div className="bg-[#FFFDF9] p-3 rounded-2xl border-2 border-orange-400 shadow-md flex flex-col items-center">
@@ -606,87 +678,9 @@ export const KundaliChart: React.FC<KundaliChartProps> = ({
                 )}
               </div>
             </div>
-
-            {/* Selected House Deep Dive Panel */}
-            <div className={`${chartDivision === 'both' ? 'lg:col-span-4' : 'lg:col-span-5'} bg-gradient-to-br from-amber-50/70 to-orange-50/50 p-4 sm:p-5 rounded-2xl border-2 border-orange-200 space-y-4`}>
-              <div className="flex items-center justify-between border-b border-orange-200 pb-3">
-                <div>
-                  <span className="text-[10px] font-bold text-orange-600 uppercase tracking-wide">
-                    भाव विश्लेषण
-                  </span>
-                  <h4 className="font-serif font-bold text-orange-950 text-base">
-                    भाव संख्या {selectedHouse} - {activeHouseData.hindiTitle}
-                  </h4>
-                </div>
-                <span className="w-8 h-8 rounded-full bg-orange-600 text-white font-serif font-bold text-sm flex items-center justify-center shadow">
-                  {selectedHouse}
-                </span>
-              </div>
-
-              <div className="grid grid-cols-2 gap-2 text-xs">
-                <div className="bg-white p-2.5 rounded-xl border border-orange-200 shadow-xs">
-                  <span className="text-[10px] text-stone-500 block">राशि:</span>
-                  <strong className="text-orange-950 font-serif text-sm">
-                    {activeHouseData.rashiHindi}
-                  </strong>
-                </div>
-                <div className="bg-white p-2.5 rounded-xl border border-orange-200 shadow-xs">
-                  <span className="text-[10px] text-stone-500 block">भावेश (स्वामी):</span>
-                  <strong className="text-orange-950 font-serif text-sm">
-                    {activeHouseData.rashiLord}
-                  </strong>
-                </div>
-              </div>
-
-              <div>
-                <span className="text-[11px] font-semibold text-orange-950 block mb-1.5">
-                  भाव में स्थित ग्रह:
-                </span>
-                {activeHouseData.planets.length === 0 ? (
-                  <p className="text-xs text-stone-600 italic bg-white p-2.5 rounded-xl border border-orange-200">
-                    इस भाव में कोई प्रत्यक्ष ग्रह स्थित नहीं है। यह भाव अपने स्वामी {activeHouseData.rashiLord} के प्रभाव से संचालित होता है।
-                  </p>
-                ) : (
-                  <div className="space-y-2">
-                    {activeHouseData.planets.map((p) => {
-                      const pInfo = planets[p];
-                      const navInfo = navamshaPlanets[p];
-                      return (
-                        <div
-                          key={p}
-                          className="bg-white p-2.5 rounded-xl border border-orange-200 flex items-center justify-between text-xs shadow-sm"
-                        >
-                          <div>
-                            <strong className="text-orange-950 block font-semibold">
-                              {pInfo.hindiName}
-                            </strong>
-                            <span className="text-[11px] text-stone-600">
-                              {pInfo.nakshatra} (पद {pInfo.pada}) • {pInfo.signDegree.toFixed(1)}° • नवांश: {navInfo.signHindi}
-                            </span>
-                          </div>
-                          <span className="bg-orange-100 text-orange-800 px-2 py-0.5 rounded text-[11px] border border-orange-200 font-semibold">
-                            {pInfo.dignityHindi}
-                          </span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-
-              <div className="bg-white p-3 rounded-xl border border-orange-200 text-xs text-stone-700 shadow-xs">
-                <span className="text-orange-800 font-bold block mb-1">
-                  वैदिक महत्व व प्रभाव:
-                </span>
-                {activeHouseData.significanceHindi || activeHouseData.significanceEng}
-              </div>
-
-              <div className="text-[11px] text-orange-800 font-medium flex items-center gap-1.5">
-                <Info className="w-3.5 h-3.5 text-orange-600" />
-                चक्र के किसी भी भाव पर क्लिक करके उसका विस्तृत फलादेश देखें।
-              </div>
-            </div>
           </div>
+
+
 
           {/* Planetary Degrees & Longitude Table */}
           <div className="space-y-3 pt-4 border-t border-orange-100">
@@ -810,13 +804,7 @@ export const KundaliChart: React.FC<KundaliChartProps> = ({
           </div>
         </div>
 
-      {/* SECTION 2: KUNDALI VISHLESHAN & DETAILED ANALYSIS */}
       <div className="space-y-8">
-        <KundaliAnalysisView
-          kundali={kundali}
-          onRefreshAI={onRefreshAI || (() => {})}
-          isLoadingAI={isLoadingAI || false}
-        />
 
           {/* SECTION 3: 120-YEAR VIMSHOTTARI DASHA */}
           <div className="bg-white rounded-3xl border-2 border-orange-200 p-6 sm:p-8 shadow-lg shadow-orange-950/5 space-y-6">

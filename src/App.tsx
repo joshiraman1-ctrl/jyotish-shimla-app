@@ -17,6 +17,7 @@ import { PanchangMuhuratView } from './components/PanchangMuhuratView';
 import { DoshNivaranView } from './components/DoshNivaranView';
 import { VastuShastraView } from './components/VastuShastraView';
 import { CustomPageEditorView } from './components/CustomPageEditorView';
+import { HomeView } from './components/HomeView';
 import { useLanguage } from './context/LanguageContext';
 import {
   Sparkles,
@@ -43,11 +44,11 @@ import {
 } from 'lucide-react';
 
 const DEFAULT_BIRTH_DETAILS: BirthDetails = {
-  name: '',
+  name: 'Kushagar',
   gender: 'male',
-  dateOfBirth: '',
-  timeOfBirth: '12:00',
-  placeOfBirth: 'Shimla, Himachal Pradesh',
+  dateOfBirth: '1997-01-22',
+  timeOfBirth: '20:56',
+  placeOfBirth: 'शिमला, हिमाचल प्रदेश (Shimla)',
   latitude: 31.1048,
   longitude: 77.1734,
   timezone: 5.5,
@@ -156,391 +157,7 @@ export default function App() {
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-3 space-y-3">
         {/* Tab 1: Home / Main Vedic Dashboard */}
         {activeTab === 'home' && (
-          <div className="space-y-3">
-            {/* Hero Banner with Vedic Bhagwa & Light Aesthetics */}
-            <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-amber-100/90 via-orange-50 to-amber-50 border-2 border-orange-300/80 p-5 sm:p-6 shadow-md shadow-orange-900/5">
-              <div className="absolute top-0 right-0 w-96 h-96 bg-orange-400/10 rounded-full blur-3xl pointer-events-none" />
-              <div className="absolute bottom-0 left-0 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-
-              <div className="relative z-10 max-w-3xl space-y-3">
-                <div className="inline-flex items-center gap-2 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-xs">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-200 animate-pulse" />
-                  <span>{t('hero.badge')}</span>
-                </div>
-
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-extrabold text-orange-950 tracking-wide leading-tight">
-                  {t('hero.title')}
-                </h1>
-
-                <p className="text-xs sm:text-sm text-stone-700 leading-relaxed font-medium">
-                  {t('hero.desc')}
-                </p>
-
-                {/* Primary Fast Action Buttons */}
-                <div className="flex flex-wrap items-center gap-2.5 pt-1">
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab('birth-chart')}
-                    className="px-4 py-2 rounded-xl bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 hover:from-orange-500 hover:to-amber-500 text-white text-xs font-bold shadow-md shadow-orange-600/25 border border-orange-400/40 flex items-center gap-1.5 transition-all transform hover:scale-[1.02]"
-                  >
-                    <Layers className="w-3.5 h-3.5" />
-                    <span>{t('hero.btn_kundali')}</span>
-                    <ChevronRight className="w-3.5 h-3.5" />
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab('prashna')}
-                    className="px-3.5 py-2 rounded-xl bg-white hover:bg-orange-50 text-orange-950 text-xs font-bold border-2 border-orange-200 flex items-center gap-1.5 shadow-xs transition-colors"
-                  >
-                    <FileQuestion className="w-3.5 h-3.5 text-orange-600" />
-                    <span>{t('hero.btn_prashna')}</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab('chat')}
-                    className="px-3.5 py-2 rounded-xl bg-white hover:bg-orange-50 text-orange-950 text-xs font-bold border-2 border-orange-200 flex items-center gap-1.5 shadow-xs transition-colors"
-                  >
-                    <MessageSquare className="w-3.5 h-3.5 text-orange-600" />
-                    <span>{t('hero.btn_chat')}</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* All Standalone Main Pages Grid Directory */}
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-lg sm:text-xl font-serif font-extrabold text-orange-950 flex items-center gap-2">
-                    <Layers className="w-5 h-5 text-orange-600" />
-                    <span>{t('directory.title')}</span>
-                  </h2>
-                  <p className="text-xs text-stone-600 mt-0.5">
-                    {t('directory.desc')}
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
-                {/* 1. Merged Birth Details, Kundali, Navamsha, Analysis, Dasha & Gochar Page */}
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('birth-chart')}
-                  className="p-3.5 rounded-xl bg-white border-2 border-orange-200 hover:border-orange-500 shadow-sm hover:shadow transition-all text-left group flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="w-8 h-8 rounded-lg bg-orange-100 group-hover:bg-orange-600 text-orange-600 group-hover:text-white flex items-center justify-center transition-colors mb-2">
-                      <Layers className="w-4 h-4" />
-                    </div>
-                    <h3 className="font-serif font-bold text-orange-950 text-sm group-hover:text-orange-600 transition-colors">
-                      {t('tab.birth_chart')}
-                    </h3>
-                    <p className="text-[11px] text-stone-600 mt-0.5 line-clamp-2">
-                      {t('card.birth_chart.desc')}
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between pt-2 mt-2 border-t border-orange-100 text-[10px] font-bold text-orange-600">
-                    <span>{t('directory.open')}</span>
-                    <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </button>
-
-                {/* 2. Prashna Kundali Page */}
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('prashna')}
-                  className="p-3.5 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-orange-300 hover:border-orange-500 shadow-sm hover:shadow transition-all text-left group flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="w-8 h-8 rounded-lg bg-orange-600 text-white flex items-center justify-center transition-colors mb-2 shadow-xs">
-                      <FileQuestion className="w-4 h-4" />
-                    </div>
-                    <h3 className="font-serif font-bold text-orange-950 text-sm group-hover:text-orange-600 transition-colors flex items-center gap-1">
-                      <span>{t('tab.prashna')}</span>
-                    </h3>
-                    <p className="text-[11px] text-stone-600 mt-0.5 line-clamp-2">
-                      {t('card.prashna.desc')}
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between pt-2 mt-2 border-t border-orange-200 text-[10px] font-bold text-orange-600">
-                    <span>{t('directory.open')}</span>
-                    <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </button>
-
-                {/* 3. Kundali Milan */}
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('milan')}
-                  className="p-3.5 rounded-xl bg-white border-2 border-orange-200 hover:border-orange-500 shadow-sm hover:shadow transition-all text-left group flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="w-8 h-8 rounded-lg bg-orange-100 group-hover:bg-orange-600 text-orange-600 group-hover:text-white flex items-center justify-center transition-colors mb-2">
-                      <HeartHandshake className="w-4 h-4" />
-                    </div>
-                    <h3 className="font-serif font-bold text-orange-950 text-sm group-hover:text-orange-600 transition-colors">
-                      {t('tab.milan')}
-                    </h3>
-                    <p className="text-[11px] text-stone-600 mt-0.5 line-clamp-2">
-                      {t('card.milan.desc')}
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between pt-2 mt-2 border-t border-orange-100 text-[10px] font-bold text-orange-600">
-                    <span>{t('directory.open')}</span>
-                    <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </button>
-
-                {/* 4. Panchang & Muhurat */}
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('panchang')}
-                  className="p-3.5 rounded-xl bg-white border-2 border-orange-200 hover:border-orange-500 shadow-sm hover:shadow transition-all text-left group flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="w-8 h-8 rounded-lg bg-orange-100 group-hover:bg-orange-600 text-orange-600 group-hover:text-white flex items-center justify-center transition-colors mb-2">
-                      <Calendar className="w-4 h-4" />
-                    </div>
-                    <h3 className="font-serif font-bold text-orange-950 text-sm group-hover:text-orange-600 transition-colors">
-                      {t('tab.panchang')}
-                    </h3>
-                    <p className="text-[11px] text-stone-600 mt-0.5 line-clamp-2">
-                      {t('card.panchang.desc')}
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between pt-2 mt-2 border-t border-orange-100 text-[10px] font-bold text-orange-600">
-                    <span>{t('directory.open')}</span>
-                    <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </button>
-
-                {/* 5. Dosha Shanti */}
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('dosh')}
-                  className="p-3.5 rounded-xl bg-white border-2 border-orange-200 hover:border-orange-500 shadow-sm hover:shadow transition-all text-left group flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="w-8 h-8 rounded-lg bg-orange-100 group-hover:bg-orange-600 text-orange-600 group-hover:text-white flex items-center justify-center transition-colors mb-2">
-                      <ShieldAlert className="w-4 h-4" />
-                    </div>
-                    <h3 className="font-serif font-bold text-orange-950 text-sm group-hover:text-orange-600 transition-colors">
-                      {t('tab.dosh')}
-                    </h3>
-                    <p className="text-[11px] text-stone-600 mt-0.5 line-clamp-2">
-                      {t('card.dosh.desc')}
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between pt-2 mt-2 border-t border-orange-100 text-[10px] font-bold text-orange-600">
-                    <span>{t('directory.open')}</span>
-                    <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </button>
-
-                {/* 6. Gemstones */}
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('gemstones')}
-                  className="p-3.5 rounded-xl bg-white border-2 border-orange-200 hover:border-orange-500 shadow-sm hover:shadow transition-all text-left group flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="w-8 h-8 rounded-lg bg-orange-100 group-hover:bg-orange-600 text-orange-600 group-hover:text-white flex items-center justify-center transition-colors mb-2">
-                      <Gem className="w-4 h-4" />
-                    </div>
-                    <h3 className="font-serif font-bold text-orange-950 text-sm group-hover:text-orange-600 transition-colors">
-                      {t('tab.gemstones')}
-                    </h3>
-                    <p className="text-[11px] text-stone-600 mt-0.5 line-clamp-2">
-                      {t('card.gemstones.desc')}
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between pt-2 mt-2 border-t border-orange-100 text-[10px] font-bold text-orange-600">
-                    <span>{t('directory.open')}</span>
-                    <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </button>
-
-                {/* 7. Vedic Upay */}
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('remedies')}
-                  className="p-3.5 rounded-xl bg-white border-2 border-orange-200 hover:border-orange-500 shadow-sm hover:shadow transition-all text-left group flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="w-8 h-8 rounded-lg bg-orange-100 group-hover:bg-orange-600 text-orange-600 group-hover:text-white flex items-center justify-center transition-colors mb-2">
-                      <Flame className="w-4 h-4" />
-                    </div>
-                    <h3 className="font-serif font-bold text-orange-950 text-sm group-hover:text-orange-600 transition-colors">
-                      {t('tab.remedies')}
-                    </h3>
-                    <p className="text-[11px] text-stone-600 mt-0.5 line-clamp-2">
-                      {t('card.remedies.desc')}
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between pt-2 mt-2 border-t border-orange-100 text-[10px] font-bold text-orange-600">
-                    <span>{t('directory.open')}</span>
-                    <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </button>
-
-                {/* 8. Vastu Shastra */}
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('vastu')}
-                  className="p-3.5 rounded-xl bg-white border-2 border-orange-200 hover:border-orange-500 shadow-sm hover:shadow transition-all text-left group flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="w-8 h-8 rounded-lg bg-orange-100 group-hover:bg-orange-600 text-orange-600 group-hover:text-white flex items-center justify-center transition-colors mb-2">
-                      <Home className="w-4 h-4" />
-                    </div>
-                    <h3 className="font-serif font-bold text-orange-950 text-sm group-hover:text-orange-600 transition-colors">
-                      {t('tab.vastu')}
-                    </h3>
-                    <p className="text-[11px] text-stone-600 mt-0.5 line-clamp-2">
-                      {t('card.vastu.desc')}
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between pt-2 mt-2 border-t border-orange-100 text-[10px] font-bold text-orange-600">
-                    <span>{t('directory.open')}</span>
-                    <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </button>
-
-                {/* 9. Esoteric Consciousness */}
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('esoteric')}
-                  className="p-3.5 rounded-xl bg-white border-2 border-orange-200 hover:border-orange-500 shadow-sm hover:shadow transition-all text-left group flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="w-8 h-8 rounded-lg bg-orange-100 group-hover:bg-orange-600 text-orange-600 group-hover:text-white flex items-center justify-center transition-colors mb-2">
-                      <Sparkles className="w-4 h-4" />
-                    </div>
-                    <h3 className="font-serif font-bold text-orange-950 text-sm group-hover:text-orange-600 transition-colors">
-                      {t('tab.esoteric')}
-                    </h3>
-                    <p className="text-[11px] text-stone-600 mt-0.5 line-clamp-2">
-                      {t('card.esoteric.desc')}
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between pt-2 mt-2 border-t border-orange-100 text-[10px] font-bold text-orange-600">
-                    <span>{t('directory.open')}</span>
-                    <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </button>
-
-                {/* 10. Ask AI Astrologer */}
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('chat')}
-                  className="p-3.5 rounded-xl bg-white border-2 border-orange-200 hover:border-orange-500 shadow-sm hover:shadow transition-all text-left group flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="w-8 h-8 rounded-lg bg-orange-100 group-hover:bg-orange-600 text-orange-600 group-hover:text-white flex items-center justify-center transition-colors mb-2">
-                      <MessageSquare className="w-4 h-4" />
-                    </div>
-                    <h3 className="font-serif font-bold text-orange-950 text-sm group-hover:text-orange-600 transition-colors">
-                      {t('tab.chat')}
-                    </h3>
-                    <p className="text-[11px] text-stone-600 mt-0.5 line-clamp-2">
-                      {t('card.chat.desc')}
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between pt-2 mt-2 border-t border-orange-100 text-[10px] font-bold text-orange-600">
-                    <span>{t('directory.open')}</span>
-                    <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </button>
-
-                {/* 11. Official Portal */}
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('portal')}
-                  className="p-3.5 rounded-xl bg-white border-2 border-orange-200 hover:border-orange-500 shadow-sm hover:shadow transition-all text-left group flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="w-8 h-8 rounded-lg bg-orange-100 group-hover:bg-orange-600 text-orange-600 group-hover:text-white flex items-center justify-center transition-colors mb-2">
-                      <ShieldCheck className="w-4 h-4" />
-                    </div>
-                    <h3 className="font-serif font-bold text-orange-950 text-sm group-hover:text-orange-600 transition-colors">
-                      {t('tab.portal')}
-                    </h3>
-                    <p className="text-[11px] text-stone-600 mt-0.5 line-clamp-2">
-                      {t('card.portal.desc')}
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between pt-2 mt-2 border-t border-orange-100 text-[10px] font-bold text-orange-600">
-                    <span>{t('directory.open')}</span>
-                    <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </button>
-
-                {/* 12. Page Editor */}
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('editor')}
-                  className="p-3.5 rounded-xl bg-white border-2 border-orange-200 hover:border-orange-500 shadow-sm hover:shadow transition-all text-left group flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="w-8 h-8 rounded-lg bg-orange-100 group-hover:bg-orange-600 text-orange-600 group-hover:text-white flex items-center justify-center transition-colors mb-2">
-                      <Code2 className="w-4 h-4" />
-                    </div>
-                    <h3 className="font-serif font-bold text-orange-950 text-sm group-hover:text-orange-600 transition-colors">
-                      {t('tab.editor')}
-                    </h3>
-                    <p className="text-[11px] text-stone-600 mt-0.5 line-clamp-2">
-                      {t('card.editor.desc')}
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between pt-2 mt-2 border-t border-orange-100 text-[10px] font-bold text-orange-600">
-                    <span>{t('directory.open')}</span>
-                    <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </button>
-              </div>
-            </div>
-
-            {/* Jyotish Shimla Official Portal Spotlight Card */}
-            <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 rounded-3xl p-5 sm:p-6 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-4 border-2 border-amber-300">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-white text-orange-600 font-serif font-extrabold text-2xl flex items-center justify-center shadow-md shrink-0">
-                  ॐ
-                </div>
-                <div>
-                  <div className="inline-flex items-center gap-1.5 bg-white/20 text-white border border-white/40 px-2.5 py-0.5 rounded-full text-[11px] font-semibold mb-1">
-                    <Sparkles className="w-3 h-3 text-amber-200" /> {t('app.tagline')}
-                  </div>
-                  <h3 className="text-lg font-serif font-bold text-white">
-                    {t('app.title')} • {t('app.subtitle')}
-                  </h3>
-                  <p className="text-xs text-amber-100 mt-0.5 font-medium">
-                    {t('hero.desc')}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 w-full md:w-auto justify-end">
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('portal')}
-                  className="px-4 py-2 rounded-xl bg-white/20 hover:bg-white/30 text-white text-xs font-bold border border-white/50 transition-colors"
-                >
-                  {t('tab.portal')}
-                </button>
-                <a
-                  href="https://sites.google.com/view/jyotishshimla/home"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2 rounded-xl bg-white hover:bg-orange-50 text-orange-950 text-xs font-bold shadow flex items-center gap-1.5 transition-transform hover:scale-105"
-                >
-                  <span>{t('app.official_website')}</span>
-                  <ExternalLink className="w-3.5 h-3.5 text-orange-600" />
-                </a>
-              </div>
-            </div>
-          </div>
+          <HomeView setActiveTab={setActiveTab} />
         )}
 
         {/* Merged Tab 2: Birth Details Input, Kundali Charts, Analysis, Dasha & Gochar Matrix */}
@@ -631,7 +248,7 @@ export default function App() {
       </main>
 
       {/* Light Bhagwa / Saffron Footer */}
-      <footer className="bg-gradient-to-r from-amber-100 via-orange-100 to-amber-100 border-t-2 border-orange-300 text-orange-950 text-xs py-7 mt-12 shadow-sm">
+      <footer className="bg-gradient-to-r from-amber-100 via-orange-100 to-amber-100 border-t-2 border-orange-300 text-orange-950 text-xs py-7 mt-12 mb-16 md:mb-0 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-orange-600 border border-orange-400 flex items-center justify-center text-white font-serif font-bold text-base shadow-sm">
@@ -662,6 +279,57 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      {/* Material Design 3 Fixed Bottom Navigation Bar for Mobile */}
+      <nav aria-label="Mobile Bottom Navigation" className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-orange-200 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] z-50 px-2 py-1.5 flex items-center justify-around">
+        <button
+          onClick={() => setActiveTab('home')}
+          className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all ${
+            activeTab === 'home'
+              ? 'text-orange-600 font-bold bg-orange-50 scale-105'
+              : 'text-stone-500 hover:text-stone-800'
+          }`}
+        >
+          <Home className="w-5 h-5 mb-0.5" />
+          <span className="text-[11px] font-medium">होम</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('birth-chart')}
+          className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all ${
+            activeTab === 'birth-chart'
+              ? 'text-orange-600 font-bold bg-orange-50 scale-105'
+              : 'text-stone-500 hover:text-stone-800'
+          }`}
+        >
+          <Sparkles className="w-5 h-5 mb-0.5" />
+          <span className="text-[11px] font-medium">कुंडली</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('panchang')}
+          className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all ${
+            activeTab === 'panchang'
+              ? 'text-orange-600 font-bold bg-orange-50 scale-105'
+              : 'text-stone-500 hover:text-stone-800'
+          }`}
+        >
+          <Calendar className="w-5 h-5 mb-0.5" />
+          <span className="text-[11px] font-medium">पंचांग</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('chat')}
+          className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all ${
+            activeTab === 'chat'
+              ? 'text-orange-600 font-bold bg-orange-50 scale-105'
+              : 'text-stone-500 hover:text-stone-800'
+          }`}
+        >
+          <MessageSquare className="w-5 h-5 mb-0.5" />
+          <span className="text-[11px] font-medium">ज्योतिषी</span>
+        </button>
+      </nav>
     </div>
   );
 }

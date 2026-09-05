@@ -53,7 +53,7 @@ async function generateWithFallback({
     }
   }
 
-  const models = ['gemini-3.6-flash', 'gemini-2.5-flash'];
+  const models = ['gemini-3.6-flash', 'gemini-2.5-flash', 'gemini-1.5-flash', 'gemini-flash-lite-latest'];
 
   for (const model of models) {
     try {
@@ -70,8 +70,20 @@ async function generateWithFallback({
       }
     } catch (error: any) {
       console.warn(`Model ${model} failed or quota exceeded:`, error?.message || error);
-      if (error?.message?.includes('resource_exhausted') || error?.message?.includes('quota') || error?.status === 429) {
-        break;
+      // Immediately fallback if quota, rate limit, or unavailable (503)
+      if (
+        error?.message?.includes('resource_exhausted') || 
+        error?.message?.includes('quota') || 
+        error?.message?.includes('429') || 
+        error?.message?.includes('503') ||
+        error?.status === 429 ||
+        error?.status === 503 ||
+        error?.code === 503
+      ) {
+        // If 503 or 429, try next model or immediately fallback
+        if (model === 'gemini-flash-lite-latest') {
+          break;
+        }
       }
     }
   }

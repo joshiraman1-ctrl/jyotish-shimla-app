@@ -29,10 +29,10 @@ export const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, hasKund
 
   const tabs = [
     { id: 'home', label: t('tab.home'), icon: Compass },
+    { id: 'panchang', label: t('tab.panchang'), icon: Calendar },
     { id: 'birth-chart', label: t('tab.birth_chart'), icon: Layers },
     { id: 'prashna', label: t('tab.prashna'), icon: FileQuestion },
     { id: 'milan', label: t('tab.milan'), icon: HeartHandshake },
-    { id: 'panchang', label: t('tab.panchang'), icon: Calendar },
     { id: 'dosh', label: t('tab.dosh'), icon: ShieldAlert },
     { id: 'gemstones', label: t('tab.gemstones'), icon: Gem },
     { id: 'remedies', label: t('tab.remedies'), icon: Flame },

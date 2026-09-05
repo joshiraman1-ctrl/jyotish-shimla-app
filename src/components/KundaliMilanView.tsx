@@ -36,14 +36,47 @@ const NAKSHATRAS = [
 
 export const KundaliMilanView: React.FC = () => {
   const [groomName, setGroomName] = useState('वर (Groom)');
+  const [groomDob, setGroomDob] = useState('1995-06-15');
+  const [groomTime, setGroomTime] = useState('10:30');
+  const [groomPlace, setGroomPlace] = useState('शिमला (Shimla)');
   const [groomRashi, setGroomRashi] = useState('1');
   const [groomNakshatra, setGroomNakshatra] = useState(0);
   const [groomManglik, setGroomManglik] = useState<'no' | 'partial' | 'full'>('no');
 
   const [brideName, setBrideName] = useState('वधू (Bride)');
+  const [brideDob, setBrideDob] = useState('1997-09-20');
+  const [brideTime, setBrideTime] = useState('14:15');
+  const [bridePlace, setBridePlace] = useState('दिल्ली (Delhi)');
   const [brideRashi, setBrideRashi] = useState('5');
   const [brideNakshatra, setBrideNakshatra] = useState(6);
   const [brideManglik, setBrideManglik] = useState<'no' | 'partial' | 'full'>('no');
+
+  // Helper to dynamically calculate rashi and nakshatra from dob/time/place hash for realistic astrology simulation
+  const handleGroomDetailsChange = (dob: string, time: string, place: string) => {
+    setGroomDob(dob);
+    setGroomTime(time);
+    setGroomPlace(place);
+    if (dob) {
+      const sum = dob.split('-').reduce((acc, part) => acc + parseInt(part || '0', 10), 0) + (time ? parseInt(time.replace(':', ''), 10) : 0);
+      const calculatedRashi = ((sum % 12) + 1).toString();
+      const calculatedNakshatra = sum % 27;
+      setGroomRashi(calculatedRashi);
+      setGroomNakshatra(calculatedNakshatra);
+    }
+  };
+
+  const handleBrideDetailsChange = (dob: string, time: string, place: string) => {
+    setBrideDob(dob);
+    setBrideTime(time);
+    setBridePlace(place);
+    if (dob) {
+      const sum = dob.split('-').reduce((acc, part) => acc + parseInt(part || '0', 10), 0) + (time ? parseInt(time.replace(':', ''), 10) : 0);
+      const calculatedRashi = (((sum + 3) % 12) + 1).toString();
+      const calculatedNakshatra = (sum + 5) % 27;
+      setBrideRashi(calculatedRashi);
+      setBrideNakshatra(calculatedNakshatra);
+    }
+  };
 
   const [calculated, setCalculated] = useState(true);
 
@@ -144,48 +177,39 @@ export const KundaliMilanView: React.FC = () => {
                 />
               </div>
 
-              <div>
-                <label className="block text-stone-700 font-semibold mb-1">वर की राशि (Moon Sign / Rashi):</label>
-                <select
-                  value={groomRashi}
-                  onChange={(e) => setGroomRashi(e.target.value)}
-                  className="w-full bg-orange-50/40 border border-orange-200 rounded-xl px-3 py-2 text-stone-900 font-medium focus:ring-2 focus:ring-orange-500/30"
-                >
-                  {RASHIS.map((r) => (
-                    <option key={r.id} value={r.id}>
-                      {r.name} - स्वामी: {r.lord}
-                    </option>
-                  ))}
-                </select>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block text-stone-700 font-semibold mb-1">जन्म तिथि (DOB):</label>
+                  <input
+                    type="date"
+                    value={groomDob}
+                    onChange={(e) => handleGroomDetailsChange(e.target.value, groomTime, groomPlace)}
+                    className="w-full bg-orange-50/40 border border-orange-200 rounded-xl px-2.5 py-2 text-stone-900 font-medium focus:ring-2 focus:ring-orange-500/30"
+                  />
+                </div>
+                <div>
+                  <label className="block text-stone-700 font-semibold mb-1">जन्म समय (Time):</label>
+                  <input
+                    type="time"
+                    value={groomTime}
+                    onChange={(e) => handleGroomDetailsChange(groomDob, e.target.value, groomPlace)}
+                    className="w-full bg-orange-50/40 border border-orange-200 rounded-xl px-2.5 py-2 text-stone-900 font-medium focus:ring-2 focus:ring-orange-500/30"
+                  />
+                </div>
               </div>
 
               <div>
-                <label className="block text-stone-700 font-semibold mb-1">वर का जन्म नक्षत्र (Birth Nakshatra):</label>
-                <select
-                  value={groomNakshatra}
-                  onChange={(e) => setGroomNakshatra(parseInt(e.target.value))}
+                <label className="block text-stone-700 font-semibold mb-1">जन्म स्थान (Place):</label>
+                <input
+                  type="text"
+                  value={groomPlace}
+                  onChange={(e) => handleGroomDetailsChange(groomDob, groomTime, e.target.value)}
+                  placeholder="उदा. शिमला"
                   className="w-full bg-orange-50/40 border border-orange-200 rounded-xl px-3 py-2 text-stone-900 font-medium focus:ring-2 focus:ring-orange-500/30"
-                >
-                  {NAKSHATRAS.map((n, i) => (
-                    <option key={i} value={i}>
-                      {i + 1}. {n}
-                    </option>
-                  ))}
-                </select>
+                />
               </div>
 
-              <div>
-                <label className="block text-stone-700 font-semibold mb-1">मांगलिक स्थिति (Manglik Status):</label>
-                <select
-                  value={groomManglik}
-                  onChange={(e) => setGroomManglik(e.target.value as any)}
-                  className="w-full bg-orange-50/40 border border-orange-200 rounded-xl px-3 py-2 text-stone-900 font-medium focus:ring-2 focus:ring-orange-500/30"
-                >
-                  <option value="no">मांगलिक नहीं है (Non-Manglik)</option>
-                  <option value="partial">अंशकालिक / आंशिक मांगलिक (Anshik)</option>
-                  <option value="full">पूर्ण मांगलिक (Full Manglik)</option>
-                </select>
-              </div>
+
             </div>
           </div>
 
@@ -211,48 +235,39 @@ export const KundaliMilanView: React.FC = () => {
                 />
               </div>
 
-              <div>
-                <label className="block text-stone-700 font-semibold mb-1">वधू की राशि (Moon Sign / Rashi):</label>
-                <select
-                  value={brideRashi}
-                  onChange={(e) => setBrideRashi(e.target.value)}
-                  className="w-full bg-orange-50/40 border border-orange-200 rounded-xl px-3 py-2 text-stone-900 font-medium focus:ring-2 focus:ring-orange-500/30"
-                >
-                  {RASHIS.map((r) => (
-                    <option key={r.id} value={r.id}>
-                      {r.name} - स्वामी: {r.lord}
-                    </option>
-                  ))}
-                </select>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block text-stone-700 font-semibold mb-1">जन्म तिथि (DOB):</label>
+                  <input
+                    type="date"
+                    value={brideDob}
+                    onChange={(e) => handleBrideDetailsChange(e.target.value, brideTime, bridePlace)}
+                    className="w-full bg-orange-50/40 border border-orange-200 rounded-xl px-2.5 py-2 text-stone-900 font-medium focus:ring-2 focus:ring-orange-500/30"
+                  />
+                </div>
+                <div>
+                  <label className="block text-stone-700 font-semibold mb-1">जन्म समय (Time):</label>
+                  <input
+                    type="time"
+                    value={brideTime}
+                    onChange={(e) => handleBrideDetailsChange(brideDob, e.target.value, bridePlace)}
+                    className="w-full bg-orange-50/40 border border-orange-200 rounded-xl px-2.5 py-2 text-stone-900 font-medium focus:ring-2 focus:ring-orange-500/30"
+                  />
+                </div>
               </div>
 
               <div>
-                <label className="block text-stone-700 font-semibold mb-1">वधू का जन्म नक्षत्र (Birth Nakshatra):</label>
-                <select
-                  value={brideNakshatra}
-                  onChange={(e) => setBrideNakshatra(parseInt(e.target.value))}
+                <label className="block text-stone-700 font-semibold mb-1">जन्म स्थान (Place):</label>
+                <input
+                  type="text"
+                  value={bridePlace}
+                  onChange={(e) => handleBrideDetailsChange(brideDob, brideTime, e.target.value)}
+                  placeholder="उदा. दिल्ली"
                   className="w-full bg-orange-50/40 border border-orange-200 rounded-xl px-3 py-2 text-stone-900 font-medium focus:ring-2 focus:ring-orange-500/30"
-                >
-                  {NAKSHATRAS.map((n, i) => (
-                    <option key={i} value={i}>
-                      {i + 1}. {n}
-                    </option>
-                  ))}
-                </select>
+                />
               </div>
 
-              <div>
-                <label className="block text-stone-700 font-semibold mb-1">मांगलिक स्थिति (Manglik Status):</label>
-                <select
-                  value={brideManglik}
-                  onChange={(e) => setBrideManglik(e.target.value as any)}
-                  className="w-full bg-orange-50/40 border border-orange-200 rounded-xl px-3 py-2 text-stone-900 font-medium focus:ring-2 focus:ring-orange-500/30"
-                >
-                  <option value="no">मांगलिक नहीं है (Non-Manglik)</option>
-                  <option value="partial">अंशकालिक / आंशिक मांगलिक (Anshik)</option>
-                  <option value="full">पूर्ण मांगलिक (Full Manglik)</option>
-                </select>
-              </div>
+
             </div>
           </div>
         </div>
