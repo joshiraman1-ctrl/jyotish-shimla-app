@@ -114,22 +114,25 @@ export const HomeView: React.FC<HomeViewProps> = ({ setActiveTab }) => {
           </div>
         </button>
 
-
-
-        {/* 5. कुंडली */}
+        {/* 2. जन्म कुंडली (Janm Kundali - 3rd position in app overall) */}
         <button
           type="button"
           onClick={() => setActiveTab('birth-chart')}
-          className="bg-white rounded-2xl border border-stone-200 p-4 text-left hover:border-amber-400 hover:shadow-md transition-all flex items-start gap-3.5 group"
+          className="bg-gradient-to-r from-orange-50 via-amber-50 to-white rounded-2xl border-2 border-orange-300 p-4 text-left hover:border-orange-500 hover:shadow-md transition-all flex items-start gap-3.5 group shadow-sm col-span-1 sm:col-span-2"
         >
-          <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0 group-hover:bg-amber-600 group-hover:text-white transition-colors">
-            <Sparkles className="w-5 h-5" />
+          <div className="w-12 h-12 rounded-xl bg-orange-600 text-white flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform">
+            <Sparkles className="w-6 h-6" />
           </div>
-          <div>
-            <h3 className="font-serif font-bold text-amber-950 text-base group-hover:text-amber-700 transition-colors">कुंडली</h3>
-            <p className="text-xs text-stone-500 mt-0.5">ग्रह स्थिति, लग्न, दशा</p>
+          <div className="flex-1">
+            <div className="flex items-center justify-between">
+              <h3 className="font-serif font-bold text-orange-950 text-base sm:text-lg group-hover:text-orange-800 transition-colors">जन्म कुंडली, चक्र व विश्लेषण (Janm Kundali)</h3>
+              <span className="text-[10px] font-bold px-2.5 py-1 bg-orange-200 text-orange-950 rounded-full border border-orange-300">संपूर्ण फलादेश</span>
+            </div>
+            <p className="text-xs sm:text-sm text-stone-700 mt-1 font-medium">लग्न चक्र, नवमांश, 120-वर्षीय विंशोत्तरी महादशा, गोचर व AI फलादेश</p>
           </div>
         </button>
+
+
 
         {/* 6. प्रश्न कुंडली */}
         <button

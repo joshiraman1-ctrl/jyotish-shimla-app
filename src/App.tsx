@@ -17,6 +17,7 @@ import { PanchangMuhuratView } from './components/PanchangMuhuratView';
 import { DoshNivaranView } from './components/DoshNivaranView';
 import { VastuShastraView } from './components/VastuShastraView';
 import { CustomPageEditorView } from './components/CustomPageEditorView';
+import { JanmKundaliPageView } from './components/JanmKundaliPageView';
 import { HomeView } from './components/HomeView';
 import { useLanguage } from './context/LanguageContext';
 import {
@@ -56,7 +57,7 @@ const DEFAULT_BIRTH_DETAILS: BirthDetails = {
 
 export default function App() {
   const { t } = useLanguage();
-  const [activeTab, setActiveTab] = useState<string>('home');
+  const [activeTab, setActiveTab] = useState<string>('birth-chart');
   const [birthDetails, setBirthDetails] = useState<BirthDetails>(DEFAULT_BIRTH_DETAILS);
   const [initialSubView, setInitialSubView] = useState<'analysis' | 'calculations'>('analysis');
   const [kundali, setKundali] = useState<KundaliAnalysisResult | null>(null);
@@ -160,8 +161,13 @@ export default function App() {
           <HomeView setActiveTab={setActiveTab} />
         )}
 
-        {/* Merged Tab 2: Birth Details Input, Kundali Charts, Analysis, Dasha & Gochar Matrix */}
-        {(activeTab === 'birth-chart' || activeTab === 'birth-input' || activeTab === 'chart' || activeTab === 'dasha' || activeTab === 'analysis') && (
+        {/* Tab 3: Janm Kundali Page (Direct HTML Code Integration) */}
+        {activeTab === 'birth-chart' && (
+          <JanmKundaliPageView />
+        )}
+
+        {/* Other Tabs */}
+        {(activeTab === 'birth-input' || activeTab === 'chart' || activeTab === 'dasha' || activeTab === 'analysis') && (
           <div className="space-y-6">
             <div className="bg-gradient-to-br from-amber-100 via-orange-50 to-white rounded-3xl border-2 border-orange-300 p-6 sm:p-8 shadow-lg shadow-orange-950/5">
               <div className="flex items-center gap-2 mb-2">
