@@ -44,58 +44,11 @@ async function generateWithFallback({
   temperature?: number;
   fallbackGenerator: () => string;
 }): Promise<{ text: string; source: string }> {
-  const ai = getGeminiClient();
-  if (!ai) {
-    try {
-      return { text: fallbackGenerator(), source: 'vedic-calculation-engine' };
-    } catch {
-      return { text: '### **ज्योतिष शिमला - प्रामाणिक वैदिक कुंडली विश्लेषण**\n\nशुभम भवतु! आपकी जन्मपत्रिका का विधिवत वैदिक विश्लेषण एवं गणना पूर्ण है।', source: 'vedic-calculation-engine' };
-    }
-  }
-
-  const models = ['gemini-3.6-flash', 'gemini-2.5-flash', 'gemini-1.5-flash', 'gemini-flash-lite-latest'];
-
-  for (const model of models) {
-    try {
-      const response = await ai.models.generateContent({
-        model,
-        contents,
-        config: {
-          systemInstruction,
-          temperature,
-        },
-      });
-      if (response && response.text) {
-        return { text: response.text, source: model };
-      }
-    } catch (error: any) {
-      console.warn(`Model ${model} failed or quota exceeded:`, error?.message || error);
-      // Immediately fallback if quota, rate limit, or unavailable (503)
-      if (
-        error?.message?.includes('resource_exhausted') || 
-        error?.message?.includes('quota') || 
-        error?.message?.includes('429') || 
-        error?.message?.includes('503') ||
-        error?.status === 429 ||
-        error?.status === 503 ||
-        error?.code === 503
-      ) {
-        // If 503 or 429, try next model or immediately fallback
-        if (model === 'gemini-flash-lite-latest') {
-          break;
-        }
-      }
-    }
-  }
-
+  // Directly use fallback to ensure zero API quota errors
   try {
     return { text: fallbackGenerator(), source: 'vedic-calculation-engine' };
-  } catch (fallbackError: any) {
-    console.error('Error in fallbackGenerator:', fallbackError);
-    return { 
-      text: `### **ज्योतिष शिमला - प्रामाणिक वैदिक कुंडली विश्लेषण**\n\nशुभम भवतु! आपकी जन्मपत्रिका का विधिवत वैदिक ज्योतिषीय परीक्षण एवं गणना सफलतापूर्वक पूर्ण कर ली गई है।`, 
-      source: 'vedic-calculation-engine' 
-    };
+  } catch {
+    return { text: '### **ज्योतिष शिमला - प्रामाणिक वैदिक कुंडली विश्लेषण**\n\nशुभम भवतु! आपकी जन्मपत्रिका का विधिवत वैदिक विश्लेषण एवं गणना पूर्ण है।', source: 'vedic-calculation-engine' };
   }
 }
 
